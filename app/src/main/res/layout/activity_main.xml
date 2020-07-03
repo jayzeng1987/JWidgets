@@ -17,8 +17,58 @@
         app:icon="@mipmap/menu_me"
         app:iconClickEffect="true"
         app:title="测试按钮"
-        app:titleTextColor="@color/textColorLight"
+        app:titleTextColor="@color/JMenuListTextColorLight"
         app:titleTextSize="14sp"
         app:titleMarginTop="8dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/backgroundColorGrayLight"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testMenuItem">
+
+        <com.genvict.widgets.JMenuList
+            android:id="@+id/me"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mainTitle="个人中心"
+            app:icon="@mipmap/me"/>
+
+        <com.genvict.widgets.JMenuList
+            android:id="@+id/setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mainTitle="系统设置"
+            app:icon="@mipmap/setting"
+            app:showDivideArea="true"
+            app:showSubTitle="true" />
+
+        <com.genvict.widgets.JMenuList
+            android:id="@+id/favorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mainTitle="我的收藏"
+            app:icon="@mipmap/favorite"
+            app:showDivideLine="true"
+            app:showSubTitle="true"
+            app:subTitle="查看收藏" />
+
+        <com.genvict.widgets.JMenuList
+            android:id="@+id/versoin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mainTitle="版本信息"
+            app:icon="@mipmap/version"
+            app:showDivideLine="true"
+            app:showSubTitle="true"
+            app:showUnreadIcon="true"
+            app:showArrowIcon="false"
+            app:subTitle="当前版本：1.0.0" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

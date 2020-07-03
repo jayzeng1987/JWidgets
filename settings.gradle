@@ -1,2 +1,2 @@
-include ':app', ':widgets'
+include ':app', ':jmenuitem', ':jmenulist'
 rootProject.name='JWidgets'

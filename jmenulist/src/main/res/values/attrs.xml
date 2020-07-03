@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="JMenuList">
+        <attr name="bgColor" format="reference" />
+        <attr name="divideLineBgColor" format="reference" />
+        <attr name="divideAreaBgColor" format="reference" />
+        <attr name="icon" format="reference" />
+        <attr name="iconWidth" format="dimension" />
+        <attr name="iconHeight" format="dimension" />
+        <attr name="mainTitle" format="string" />
+        <attr name="subTitle" format="string" />
+        <attr name="showSubTitle" format="boolean" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="showDivideLine" format="boolean" />
+        <attr name="showDivideArea" format="boolean" />
+        <attr name="showUnreadIcon" format="boolean" />
+        <attr name="showArrowIcon" format="boolean" />
+    </declare-styleable>
+</resources>
