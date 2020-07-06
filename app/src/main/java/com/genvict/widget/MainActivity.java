@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.genvict.widgets.JMenuItem;
+import com.genvict.widgets.JMenuButton;
 import com.genvict.widgets.JMenuList;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private JMenuItem testMenuItem;
+    private JMenuButton testMenuButton;
     private JMenuList versoin;
     private JMenuList setting;
 
@@ -19,14 +19,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        testMenuItem = findViewById(R.id.testMenuItem);
-        testMenuItem.setOnClickListener(new View.OnClickListener() {
+        testMenuButton = findViewById(R.id.testMenuBtn);
+        testMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click the menu item!", Toast.LENGTH_SHORT).show();
             }
         });
-        testMenuItem.setTitle("这是一个菜单按钮")
+        testMenuButton.setTitle("这是一个菜单按钮")
                 .setTitleMarginTop(30)
                 .setIconClickEffect(false);
 

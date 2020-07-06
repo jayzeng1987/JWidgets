@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="JMenuItem">
+    <declare-styleable name="JMenuButton">
         <attr name="icon" format="reference" />
         <attr name="iconWidth" format="dimension" />
         <attr name="iconHeight" format="dimension" />
