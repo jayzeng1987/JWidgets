@@ -28,6 +28,8 @@ public class JMenuButton extends LinearLayout {
     private int iconId;
     private String title = "测试";
     private boolean showIconClickEffect = true;
+    final private ColorMatrix colorMatrix = new ColorMatrix(
+            new float[] { 0.5F, 0, 0, 0, 0, 0, 0.5F, 0, 0, 0, 0, 0, 0.5F, 0, 0, 0, 0, 0, 1, 0, });
 
     public JMenuButton(Context context) {
         this(context, null);
@@ -41,74 +43,6 @@ public class JMenuButton extends LinearLayout {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
-
-    public JMenuButton setIconId(int id) {
-        if (mIcon != null) {
-            this.iconId = id;
-            mIcon.setImageResource(iconId);
-        }
-        return this;
-    }
-
-    public JMenuButton setIconSize(int width, int height) {
-        if (mIcon != null) {
-            ViewGroup.LayoutParams lp = mIcon.getLayoutParams();
-            lp.width = width;
-            lp.height = height;
-            mIcon.setLayoutParams(lp);
-        }
-        return this;
-    }
-
-    public JMenuButton setIconClickEffect(boolean showEffect) {
-        showIconClickEffect = showEffect;
-        return this;
-    }
-
-    public JMenuButton setTitleMarginTop(int marginTop) {
-        if (mTitle != null) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, marginTop, 0, 0);
-            mTitle.setLayoutParams(lp);
-        }
-        return this;
-    }
-
-    public JMenuButton setTitle(String title) {
-        if (mTitle != null) {
-            this.title = title;
-            mTitle.setText(this.title);
-        }
-        return this;
-    }
-
-    public JMenuButton setTitleTextColor(int color) {
-        if (mTitle != null) {
-            mTitle.setTextColor(color);
-        }
-        return this;
-    }
-
-    public JMenuButton setTitleTextSize(float size) {
-        if (mTitle != null) {
-            mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-        }
-        return this;
-    }
-
-    public JMenuButton setShowTitle(boolean isShow) {
-        if (mTitle != null) {
-            if (isShow) {
-                mTitle.setVisibility(View.VISIBLE);
-            } else {
-                mTitle.setVisibility(View.GONE);
-            }
-        }
-        return this;
-    }
-
-    final ColorMatrix colorMatrix = new ColorMatrix(new float[] { 0.5F, 0, 0, 0, 0, 0, 0.5F, 0, 0, 0, 0, 0, 0.5F, 0, 0, 0, 0, 0, 1, 0, });
 
     @Override
     protected void dispatchSetPressed(boolean pressed) {
@@ -127,6 +61,118 @@ public class JMenuButton extends LinearLayout {
         super.setOnClickListener(l);
     }
 
+    /**
+     * 设置主图标资源ID
+     * @param iconId 图片资源ID
+     * @return JMenuButton
+     */
+    public JMenuButton setIconId(int iconId) {
+        if (mIcon != null) {
+            this.iconId = iconId;
+            mIcon.setImageResource(this.iconId);
+        }
+        return this;
+    }
+
+    /**
+     * 设置主图标大小
+     * @param width 宽度，默认64dp
+     * @param height 高度，默认64dp
+     * @return JMenuButton
+     */
+    public JMenuButton setIconSize(int width, int height) {
+        if (mIcon != null) {
+            ViewGroup.LayoutParams lp = mIcon.getLayoutParams();
+            lp.width = width;
+            lp.height = height;
+            mIcon.setLayoutParams(lp);
+        }
+        return this;
+    }
+
+    /**
+     * 设置是否启用图标点击效果
+     * @param showEffect true：启用，false：不启用，默认true
+     * @return JMenuButton
+     */
+    public JMenuButton setIconClickEffect(boolean showEffect) {
+        showIconClickEffect = showEffect;
+        return this;
+    }
+
+    /**
+     * 设置标题MarginTop
+     * @param marginTop 边距值
+     * @return JMenuButton
+     */
+    public JMenuButton setTitleMarginTop(int marginTop) {
+        if (mTitle != null) {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, marginTop, 0, 0);
+            mTitle.setLayoutParams(lp);
+        }
+        return this;
+    }
+
+    /**
+     * 设置标题
+     * @param title 标题
+     * @return JMenuButton
+     */
+    public JMenuButton setTitle(String title) {
+        if (mTitle != null) {
+            this.title = title;
+            mTitle.setText(this.title);
+        }
+        return this;
+    }
+
+    /**
+     * 设置标题文字颜色
+     * @param colorId 颜色资源ID
+     * @return JMenuButton
+     */
+    public JMenuButton setTitleTextColor(int colorId) {
+        if (mTitle != null) {
+            mTitle.setTextColor(colorId);
+        }
+        return this;
+    }
+
+    /**
+     * 设置标题文字大小
+     * @param size 文字大小
+     * @return JMenuButton
+     */
+    public JMenuButton setTitleTextSize(float size) {
+        if (mTitle != null) {
+            mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        }
+        return this;
+    }
+
+    /**
+     * 设置是否显示标题
+     * @param isShow true：显示，false：不显示，默认true
+     * @return JMenuButton
+     */
+    public JMenuButton setShowTitle(boolean isShow) {
+        if (mTitle != null) {
+            if (isShow) {
+                mTitle.setVisibility(View.VISIBLE);
+            } else {
+                mTitle.setVisibility(View.GONE);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * 初始化
+     * @param context 上下文资源
+     * @param attrs 属性集合
+     */
     private void init(Context context, AttributeSet attrs) {
         mContext = context;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

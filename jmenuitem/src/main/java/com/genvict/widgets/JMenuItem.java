@@ -31,8 +31,8 @@ public class JMenuItem extends LinearLayout {
     private ImageView mIconArrow;
     private TextView mMainTitile;
     private TextView mSubTitile;
-    private int mPressColor;
-    private int mNormalColor;
+    private int mPressColorId;
+    private int mNormalColorId;
 
     public JMenuItem(@NonNull Context context) {
         this(context, null);
@@ -47,6 +47,11 @@ public class JMenuItem extends LinearLayout {
         init(context, attrs);
     }
 
+    /**
+     * 设置主图标资源ID
+     * @param iconId 图片资源ID
+     * @return JMenuItem
+     */
     public JMenuItem setIconId(int iconId) {
         if (mIcon != null) {
             mIcon.setImageResource(iconId);
@@ -54,6 +59,12 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置主图标大小
+     * @param width 宽度，默认24dp
+     * @param height 高度，默认24dp
+     * @return JMenuItem
+     */
     public JMenuItem setIconSize(int width, int height) {
         if (mIcon != null) {
             ViewGroup.LayoutParams lp = mIcon.getLayoutParams();
@@ -64,6 +75,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置主标题
+     * @param title 标题内容
+     * @return JMenuItem
+     */
     public JMenuItem setMainTitle(String title) {
         if (mMainTitile != null) {
             mMainTitile.setText(title);
@@ -71,6 +87,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置子标题
+     * @param title 标题内容
+     * @return JMenuItem
+     */
     public JMenuItem setSubTitle(String title) {
         if (mSubTitile != null) {
             mSubTitile.setText(title);
@@ -78,6 +99,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示子标题
+     * @param isShow true：显示，false：不显示，默认为false
+     * @return JMenuItem
+     */
     public JMenuItem setShowSubTitle(boolean isShow) {
         if (mSubTitile != null) {
             mSubTitile.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -85,6 +111,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示分隔线
+     * @param isShow true：显示，false：不显示，默认为false
+     * @return JMenuItem
+     */
     public JMenuItem setShowDivideLine(boolean isShow) {
         if (mDivideLine != null) {
             mDivideLine.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -92,6 +123,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示分隔栏
+     * @param isShow true：显示，false：不显示，默认为false
+     * @return JMenuItem
+     */
     public JMenuItem setShowDivideArea(boolean isShow) {
         if (mDivideArea != null) {
             mDivideArea.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -99,6 +135,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示未读信息图标
+     * @param isShow true：显示，false：不显示，默认为false
+     * @return JMenuItem
+     */
     public JMenuItem setShowUnreadIcon(boolean isShow) {
         if (mIconUnread != null) {
             mIconUnread.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -106,6 +147,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示箭头图标
+     * @param isShow isShow true：显示，false：不显示，默认为true
+     * @return JMenuItem
+     */
     public JMenuItem setShowArrowIcon(boolean isShow) {
         if (mIconArrow != null) {
             mIconArrow.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -113,6 +159,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置分隔线背景颜色
+     * @param colorId 颜色资源ID
+     * @return JMenuItem
+     */
     public JMenuItem setDivideLineBgColor(int colorId) {
         if (mDivideLine != null) {
             mDivideLine.setBackgroundColor(colorId);
@@ -120,6 +171,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置分隔栏背景颜色
+     * @param colorId 颜色资源ID
+     * @return JMenuItem
+     */
     public JMenuItem setDivideAreaBgColor(int colorId) {
         if (mDivideArea != null) {
             mDivideArea.setBackgroundColor(colorId);
@@ -127,6 +183,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置标题文字颜色
+     * @param colorId 颜色资源ID
+     * @return JMenuItem
+     */
     public JMenuItem setTitleTextColor(int colorId) {
         if (mMainTitile != null && mSubTitile != null) {
             mMainTitile.setTextColor(colorId);
@@ -135,6 +196,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置标题文字大小
+     * @param size 大小，默认12sp
+     * @return JMenuItem
+     */
     public JMenuItem setTitleTextSize(float size) {
         if (mMainTitile != null && mSubTitile != null) {
             mMainTitile.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
@@ -143,20 +209,36 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
-    public JMenuItem setItemPressedColor(int pressedColor) {
-        return this.setItemSelectorColor(pressedColor, mNormalColor);
+    /**
+     * 设置Item点击状态背景颜色
+     * @param pressedColorId 颜色资源ID
+     * @return JMenuItem
+     */
+    public JMenuItem setItemPressedColor(int pressedColorId) {
+        return this.setItemSelectorColor(pressedColorId, mNormalColorId);
     }
 
-    public JMenuItem setItemNormalColor(int normalColor) {
-        return this.setItemSelectorColor(mPressColor, normalColor);
+    /**
+     * 设置Item正常状态背景颜色
+     * @param normalColorId 颜色资源ID
+     * @return JMenuItem
+     */
+    public JMenuItem setItemNormalColor(int normalColorId) {
+        return this.setItemSelectorColor(mPressColorId, normalColorId);
     }
 
-    public JMenuItem setItemSelectorColor(int pressedColor, int normalColor) {
+    /**
+     * 设置Item选择器背景颜色
+     * @param pressedColorId 点击状态背景颜色资源ID
+     * @param normalColorId 正常状态背景颜色资源ID
+     * @return JMenuItem
+     */
+    public JMenuItem setItemSelectorColor(int pressedColorId, int normalColorId) {
         if (mMainView != null) {
             GradientDrawable pressed = new GradientDrawable();
-            pressed.setColor(pressedColor);
+            pressed.setColor(pressedColorId);
             GradientDrawable normal = new GradientDrawable();
-            normal.setColor(normalColor);
+            normal.setColor(normalColorId);
             StateListDrawable bg = new StateListDrawable();
             bg.addState(new int[]{android.R.attr.state_pressed}, pressed);
             bg.addState(new int[]{}, normal);
@@ -165,6 +247,11 @@ public class JMenuItem extends LinearLayout {
         return this;
     }
 
+    /**
+     * 初始化
+     * @param context 上下文资源
+     * @param attrs 属性集合
+     */
     private void init(Context context, AttributeSet attrs) {
         mContext = context;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -197,9 +284,9 @@ public class JMenuItem extends LinearLayout {
             setShowUnreadIcon(ta.getBoolean(R.styleable.JMenuItem_showUnreadIcon, false));
             setShowArrowIcon(ta.getBoolean(R.styleable.JMenuItem_showArrowIcon, true));
 
-            mPressColor = ta.getColor(R.styleable.JMenuItem_pressedBgColor, getResources().getColor(R.color.JMenuItemClickBgColor));
-            mNormalColor = ta.getColor(R.styleable.JMenuItem_normalBgColor, getResources().getColor(R.color.JMenuItemBgColorWhite));
-            setItemSelectorColor(mPressColor, mNormalColor);
+            mPressColorId = ta.getColor(R.styleable.JMenuItem_pressedBgColor, getResources().getColor(R.color.JMenuItemClickBgColor));
+            mNormalColorId = ta.getColor(R.styleable.JMenuItem_normalBgColor, getResources().getColor(R.color.JMenuItemBgColorWhite));
+            setItemSelectorColor(mPressColorId, mNormalColorId);
             setDivideLineBgColor(ta.getColor(R.styleable.JMenuItem_divideLineBgColor, getResources().getColor(R.color.JMenuItemDivideLineColor)));
             setDivideAreaBgColor(ta.getColor(R.styleable.JMenuItem_divideAreaBgColor, getResources().getColor(R.color.JMenuItemDivideAreaColor)));
 
