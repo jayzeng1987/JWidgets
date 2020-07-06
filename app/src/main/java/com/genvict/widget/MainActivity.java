@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
     private JMenuItem testMenuItem;
     private JMenuList versoin;
+    private JMenuList setting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click the menu list!", Toast.LENGTH_SHORT).show();
                 versoin.setShowUnreadIcon(false);
+            }
+        });
+
+        setting = findViewById(R.id.setting);
+        setting.setItemPressedColor(getResources().getColor(R.color.colorAccent)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "You click the menu list!", Toast.LENGTH_SHORT).show();
             }
         });
     }

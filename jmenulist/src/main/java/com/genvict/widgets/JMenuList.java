@@ -2,12 +2,13 @@ package com.genvict.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import androidx.annotation.Nullable;
  * 菜单列表控件
  * @author jayz
  */
-public class JMenuList extends FrameLayout {
+public class JMenuList extends LinearLayout {
     private Context mContext;
     private View mView;
     private View mDivideLine;
@@ -31,6 +32,8 @@ public class JMenuList extends FrameLayout {
     private ImageView mIconArrow;
     private TextView mMainTitile;
     private TextView mSubTitile;
+    private int mPressColor;
+    private int mNormalColor;
 
     public JMenuList(@NonNull Context context) {
         this(context, null);
@@ -111,14 +114,6 @@ public class JMenuList extends FrameLayout {
         return this;
     }
 
-    public JMenuList setBgColor(int colorId) {
-        if (mMainView != null && mItemView != null) {
-            mMainView.setBackgroundColor(colorId);
-            mItemView.setBackgroundColor(colorId);
-        }
-        return this;
-    }
-
     public JMenuList setDivideLineBgColor(int colorId) {
         if (mDivideLine != null) {
             mDivideLine.setBackgroundColor(colorId);
@@ -145,6 +140,28 @@ public class JMenuList extends FrameLayout {
         if (mMainTitile != null && mSubTitile != null) {
             mMainTitile.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
             mSubTitile.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        }
+        return this;
+    }
+
+    public JMenuList setItemPressedColor(int pressedColor) {
+        return this.setItemSelectorColor(pressedColor, mNormalColor);
+    }
+
+    public JMenuList setItemNormalColor(int normalColor) {
+        return this.setItemSelectorColor(mPressColor, normalColor);
+    }
+
+    public JMenuList setItemSelectorColor(int pressedColor, int normalColor) {
+        if (mMainView != null) {
+            GradientDrawable pressed = new GradientDrawable();
+            pressed.setColor(pressedColor);
+            GradientDrawable normal = new GradientDrawable();
+            normal.setColor(normalColor);
+            StateListDrawable bg = new StateListDrawable();
+            bg.addState(new int[]{android.R.attr.state_pressed}, pressed);
+            bg.addState(new int[]{}, normal);
+            mMainView.setBackground(bg);
         }
         return this;
     }
@@ -182,7 +199,9 @@ public class JMenuList extends FrameLayout {
             setShowUnreadIcon(ta.getBoolean(R.styleable.JMenuList_showUnreadIcon, false));
             setShowArrowIcon(ta.getBoolean(R.styleable.JMenuList_showArrowIcon, true));
 
-            setBgColor(ta.getColor(R.styleable.JMenuList_bgColor, getResources().getColor(R.color.JMenuListBgColorWhite)));
+            mPressColor = ta.getColor(R.styleable.JMenuList_pressedBgColor, getResources().getColor(R.color.JMenuListClickBgColor));
+            mNormalColor = ta.getColor(R.styleable.JMenuList_normalBgColor, getResources().getColor(R.color.JMenuListBgColorWhite));
+            setItemSelectorColor(mPressColor, mNormalColor);
             setDivideLineBgColor(ta.getColor(R.styleable.JMenuList_divideLineBgColor, getResources().getColor(R.color.JMenuListDivideLineColor)));
             setDivideAreaBgColor(ta.getColor(R.styleable.JMenuList_divideAreaBgColor, getResources().getColor(R.color.JMenuListDivideAreaColor)));
 

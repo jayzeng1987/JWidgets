@@ -68,7 +68,7 @@
             app:showSubTitle="true"
             app:showUnreadIcon="true"
             app:showArrowIcon="false"
-            app:subTitle="当前版本：1.0.0" />
+            app:subTitle="当前版本：1.0.0"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

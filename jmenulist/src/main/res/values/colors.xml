@@ -4,6 +4,7 @@
     <color name="JMenuListTextColorLight">#888888</color>
     <color name="JMenuListBgColorGrayLight">#CCCCCC</color>
     <color name="JMenuListBgColorWhite">#FFFFFF</color>
+    <color name="JMenuListClickBgColor">#F0F0F0</color>
     <color name="JMenuListDivideLineColor">#DDDDDD</color>
     <color name="JMenuListDivideAreaColor">#DDDDDD</color>
 </resources>

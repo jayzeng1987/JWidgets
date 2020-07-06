@@ -2,6 +2,8 @@
 <resources>
     <declare-styleable name="JMenuList">
         <attr name="bgColor" format="reference" />
+        <attr name="pressedBgColor" format="reference" />
+        <attr name="normalBgColor" format="reference" />
         <attr name="divideLineBgColor" format="reference" />
         <attr name="divideAreaBgColor" format="reference" />
         <attr name="icon" format="reference" />
