@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="JMenuItemTextDefaultColor">#777777</color>
+    <color name="JMenuItemTextColorLight">#888888</color>
+    <color name="JMenuItemBgColorGrayLight">#CCCCCC</color>
+    <color name="JMenuItemBgColorWhite">#FFFFFF</color>
+    <color name="JMenuItemClickBgColor">#F0F0F0</color>
+    <color name="JMenuItemDivideLineColor">#DDDDDD</color>
+    <color name="JMenuItemDivideAreaColor">#DDDDDD</color>
+</resources>

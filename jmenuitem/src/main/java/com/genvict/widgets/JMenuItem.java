@@ -17,16 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * 菜单列表控件
+ * 菜单项控件
  * @author jayz
  */
-public class JMenuList extends LinearLayout {
+public class JMenuItem extends LinearLayout {
     private Context mContext;
     private View mView;
     private View mDivideLine;
     private View mDivideArea;
     private LinearLayout mMainView;
-    private LinearLayout mItemView;
     private ImageView mIcon;
     private ImageView mIconUnread;
     private ImageView mIconArrow;
@@ -35,27 +34,27 @@ public class JMenuList extends LinearLayout {
     private int mPressColor;
     private int mNormalColor;
 
-    public JMenuList(@NonNull Context context) {
+    public JMenuItem(@NonNull Context context) {
         this(context, null);
     }
 
-    public JMenuList(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public JMenuItem(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public JMenuList(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public JMenuItem(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
 
-    public JMenuList setIconId(int iconId) {
+    public JMenuItem setIconId(int iconId) {
         if (mIcon != null) {
             mIcon.setImageResource(iconId);
         }
         return this;
     }
 
-    public JMenuList setIconSize(int width, int height) {
+    public JMenuItem setIconSize(int width, int height) {
         if (mIcon != null) {
             ViewGroup.LayoutParams lp = mIcon.getLayoutParams();
             lp.width = width;
@@ -65,70 +64,70 @@ public class JMenuList extends LinearLayout {
         return this;
     }
 
-    public JMenuList setMainTitle(String title) {
+    public JMenuItem setMainTitle(String title) {
         if (mMainTitile != null) {
             mMainTitile.setText(title);
         }
         return this;
     }
 
-    public JMenuList setSubTitle(String title) {
+    public JMenuItem setSubTitle(String title) {
         if (mSubTitile != null) {
             mSubTitile.setText(title);
         }
         return this;
     }
 
-    public JMenuList setShowSubTitle(boolean isShow) {
+    public JMenuItem setShowSubTitle(boolean isShow) {
         if (mSubTitile != null) {
             mSubTitile.setVisibility(isShow ? View.VISIBLE : View.GONE);
         }
         return this;
     }
 
-    public JMenuList setShowDivideLine(boolean isShow) {
+    public JMenuItem setShowDivideLine(boolean isShow) {
         if (mDivideLine != null) {
             mDivideLine.setVisibility(isShow ? View.VISIBLE : View.GONE);
         }
         return this;
     }
 
-    public JMenuList setShowDivideArea(boolean isShow) {
+    public JMenuItem setShowDivideArea(boolean isShow) {
         if (mDivideArea != null) {
             mDivideArea.setVisibility(isShow ? View.VISIBLE : View.GONE);
         }
         return this;
     }
 
-    public JMenuList setShowUnreadIcon(boolean isShow) {
+    public JMenuItem setShowUnreadIcon(boolean isShow) {
         if (mIconUnread != null) {
             mIconUnread.setVisibility(isShow ? View.VISIBLE : View.GONE);
         }
         return this;
     }
 
-    public JMenuList setShowArrowIcon(boolean isShow) {
+    public JMenuItem setShowArrowIcon(boolean isShow) {
         if (mIconArrow != null) {
             mIconArrow.setVisibility(isShow ? View.VISIBLE : View.GONE);
         }
         return this;
     }
 
-    public JMenuList setDivideLineBgColor(int colorId) {
+    public JMenuItem setDivideLineBgColor(int colorId) {
         if (mDivideLine != null) {
             mDivideLine.setBackgroundColor(colorId);
         }
         return this;
     }
 
-    public JMenuList setDivideAreaBgColor(int colorId) {
+    public JMenuItem setDivideAreaBgColor(int colorId) {
         if (mDivideArea != null) {
             mDivideArea.setBackgroundColor(colorId);
         }
         return this;
     }
 
-    public JMenuList setTitleTextColor(int colorId) {
+    public JMenuItem setTitleTextColor(int colorId) {
         if (mMainTitile != null && mSubTitile != null) {
             mMainTitile.setTextColor(colorId);
             mSubTitile.setTextColor(colorId);
@@ -136,7 +135,7 @@ public class JMenuList extends LinearLayout {
         return this;
     }
 
-    public JMenuList setTitleTextSize(float size) {
+    public JMenuItem setTitleTextSize(float size) {
         if (mMainTitile != null && mSubTitile != null) {
             mMainTitile.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
             mSubTitile.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
@@ -144,15 +143,15 @@ public class JMenuList extends LinearLayout {
         return this;
     }
 
-    public JMenuList setItemPressedColor(int pressedColor) {
+    public JMenuItem setItemPressedColor(int pressedColor) {
         return this.setItemSelectorColor(pressedColor, mNormalColor);
     }
 
-    public JMenuList setItemNormalColor(int normalColor) {
+    public JMenuItem setItemNormalColor(int normalColor) {
         return this.setItemSelectorColor(mPressColor, normalColor);
     }
 
-    public JMenuList setItemSelectorColor(int pressedColor, int normalColor) {
+    public JMenuItem setItemSelectorColor(int pressedColor, int normalColor) {
         if (mMainView != null) {
             GradientDrawable pressed = new GradientDrawable();
             pressed.setColor(pressedColor);
@@ -169,9 +168,8 @@ public class JMenuList extends LinearLayout {
     private void init(Context context, AttributeSet attrs) {
         mContext = context;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mView = inflater.inflate(R.layout.layout_menu_list, this, true);
+        mView = inflater.inflate(R.layout.layout_menu_item, this, true);
         mMainView = mView.findViewById(R.id.ll_main);
-        mItemView = mView.findViewById(R.id.ll_item);
         mDivideLine = mView.findViewById(R.id.view_divide_line);
         mDivideArea = mView.findViewById(R.id.view_divide_area);
         mIcon = mView.findViewById(R.id.icon_main);
@@ -181,29 +179,29 @@ public class JMenuList extends LinearLayout {
         mMainTitile = mView.findViewById(R.id.tv_main_title);
         mSubTitile = mView.findViewById(R.id.tv_sub_title);
 
-        TypedArray ta =  mContext.obtainStyledAttributes(attrs, R.styleable.JMenuList);
+        TypedArray ta =  mContext.obtainStyledAttributes(attrs, R.styleable.JMenuItem);
         try {
-            setIconId(ta.getResourceId(R.styleable.JMenuList_icon, R.mipmap.ic_launcher));
-            int iconWidth = (int) ta.getDimension(R.styleable.JMenuList_iconWidth, getResources().getDimension(R.dimen.JMenuListIconDefaultWidth));
-            int iconHeight = (int) ta.getDimension(R.styleable.JMenuList_iconHeight, getResources().getDimension(R.dimen.JMenuListIconDefaultHeight));
+            setIconId(ta.getResourceId(R.styleable.JMenuItem_icon, R.mipmap.ic_launcher));
+            int iconWidth = (int) ta.getDimension(R.styleable.JMenuItem_iconWidth, getResources().getDimension(R.dimen.JMenuItemIconDefaultWidth));
+            int iconHeight = (int) ta.getDimension(R.styleable.JMenuItem_iconHeight, getResources().getDimension(R.dimen.JMenuItemIconDefaultHeight));
             setIconSize(iconWidth, iconHeight);
 
-            setMainTitle(ta.getString(R.styleable.JMenuList_mainTitle));
-            setSubTitle(ta.getString(R.styleable.JMenuList_subTitle));
-            setTitleTextColor(ta.getColor(R.styleable.JMenuList_titleTextColor, getResources().getColor(R.color.JMenuListTextDefaultColor)));
-            setTitleTextSize(ta.getDimensionPixelSize(R.styleable.JMenuList_titleTextSize, (int) getResources().getDimension(R.dimen.JMenuListTitleTextSize)));
+            setMainTitle(ta.getString(R.styleable.JMenuItem_mainTitle));
+            setSubTitle(ta.getString(R.styleable.JMenuItem_subTitle));
+            setTitleTextColor(ta.getColor(R.styleable.JMenuItem_titleTextColor, getResources().getColor(R.color.JMenuItemTextDefaultColor)));
+            setTitleTextSize(ta.getDimensionPixelSize(R.styleable.JMenuItem_titleTextSize, (int) getResources().getDimension(R.dimen.JMenuItemTitleTextSize)));
 
-            setShowSubTitle(ta.getBoolean(R.styleable.JMenuList_showSubTitle, false));
-            setShowDivideLine(ta.getBoolean(R.styleable.JMenuList_showDivideLine, false));
-            setShowDivideArea(ta.getBoolean(R.styleable.JMenuList_showDivideArea, false));
-            setShowUnreadIcon(ta.getBoolean(R.styleable.JMenuList_showUnreadIcon, false));
-            setShowArrowIcon(ta.getBoolean(R.styleable.JMenuList_showArrowIcon, true));
+            setShowSubTitle(ta.getBoolean(R.styleable.JMenuItem_showSubTitle, false));
+            setShowDivideLine(ta.getBoolean(R.styleable.JMenuItem_showDivideLine, false));
+            setShowDivideArea(ta.getBoolean(R.styleable.JMenuItem_showDivideArea, false));
+            setShowUnreadIcon(ta.getBoolean(R.styleable.JMenuItem_showUnreadIcon, false));
+            setShowArrowIcon(ta.getBoolean(R.styleable.JMenuItem_showArrowIcon, true));
 
-            mPressColor = ta.getColor(R.styleable.JMenuList_pressedBgColor, getResources().getColor(R.color.JMenuListClickBgColor));
-            mNormalColor = ta.getColor(R.styleable.JMenuList_normalBgColor, getResources().getColor(R.color.JMenuListBgColorWhite));
+            mPressColor = ta.getColor(R.styleable.JMenuItem_pressedBgColor, getResources().getColor(R.color.JMenuItemClickBgColor));
+            mNormalColor = ta.getColor(R.styleable.JMenuItem_normalBgColor, getResources().getColor(R.color.JMenuItemBgColorWhite));
             setItemSelectorColor(mPressColor, mNormalColor);
-            setDivideLineBgColor(ta.getColor(R.styleable.JMenuList_divideLineBgColor, getResources().getColor(R.color.JMenuListDivideLineColor)));
-            setDivideAreaBgColor(ta.getColor(R.styleable.JMenuList_divideAreaBgColor, getResources().getColor(R.color.JMenuListDivideAreaColor)));
+            setDivideLineBgColor(ta.getColor(R.styleable.JMenuItem_divideLineBgColor, getResources().getColor(R.color.JMenuItemDivideLineColor)));
+            setDivideAreaBgColor(ta.getColor(R.styleable.JMenuItem_divideAreaBgColor, getResources().getColor(R.color.JMenuItemDivideAreaColor)));
 
         } catch (Exception e) {
             e.printStackTrace();

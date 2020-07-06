@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginStart="50dp"
-        android:background="@color/JMenuListDivideLineColor"
+        android:background="@color/JMenuItemDivideLineColor"
         android:visibility="visible"/>
     <View
         android:id="@+id/view_divide_area"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/JMenuListDivideAreaColor"
+        android:background="@color/JMenuItemDivideAreaColor"
         android:visibility="visible"/>
 
     <LinearLayout

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="JMenuListTitleTextSize">12sp</dimen>
-    <dimen name="JMenuListIconDefaultWidth">24dp</dimen>
-    <dimen name="JMenuListIconDefaultHeight">24dp</dimen>
-</resources>
