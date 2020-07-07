@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="JTopBar">
+        <attr name="leftIconId" format="reference"/>
+        <attr name="rightIconId" format="reference" />
+        <attr name="leftTitle" format="string" />
+        <attr name="topbarMainTitle" format="string" />
+        <attr name="topbarSubTitle" format="string" />
+        <attr name="topbarTextColor" format="color" />
+        <attr name="leftTitleTextSize" format="dimension" />
+        <attr name="mainTitleTextSize" format="dimension" />
+        <attr name="subTitleTextSize" format="dimension" />
+        <attr name="leftIconWidth" format="dimension" />
+        <attr name="leftIconHeight" format="dimension" />
+        <attr name="rightIconWidth" format="dimension" />
+        <attr name="rightIconHeight" format="dimension" />
+        <attr name="showLeftTitle" format="boolean" />
+        <attr name="showSubTitle" format="boolean" />
+        <attr name="showLeftItem" format="boolean" />
+        <attr name="showRightItem" format="boolean" />
+        <attr name="topbarHeight" format="dimension" />
+        <attr name="topbarBgColor" format="color" />
+    </declare-styleable>
+</resources>

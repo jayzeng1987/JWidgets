@@ -1,2 +1,2 @@
-include ':app', ':jmenubutton', ':jmenuitem'
+include ':app', ':jmenubutton', ':jmenuitem', ':jtopbar'
 rootProject.name='JWidgets'

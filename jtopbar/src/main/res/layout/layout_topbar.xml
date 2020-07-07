@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_wrap"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/JTopBarDefHeight"
+    android:background="@color/JTopBarDefBgColor"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/ll_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/icon_left"
+            android:layout_width="@dimen/JTopBarIconDefWidth"
+            android:layout_height="@dimen/JTopBarIconDefHeight"
+            android:visibility="visible"
+            app:srcCompat="@mipmap/back" />
+
+        <TextView
+            android:id="@+id/tv_left_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:visibility="visible"
+            android:text="左标题"
+            android:textColor="@color/JTopBarDefTextColor"
+            android:textSize="@dimen/JTopBarSubTitleDefTextSize" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/icon_right"
+            android:layout_width="@dimen/JTopBarIconDefWidth"
+            android:layout_height="@dimen/JTopBarIconDefHeight"
+            app:srcCompat="@mipmap/more" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_main_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="主标题"
+            android:textColor="@color/JTopBarDefTextColor"
+            android:textSize="@dimen/JTopBarMainTitleDefTextSize"/>
+
+        <TextView
+            android:id="@+id/tv_sub_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="visible"
+            android:text="子标题"
+            android:textColor="@color/JTopBarDefTextColor"
+            android:textSize="@dimen/JTopBarSubTitleDefTextSize"/>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

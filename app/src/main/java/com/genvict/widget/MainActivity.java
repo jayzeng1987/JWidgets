@@ -1,5 +1,6 @@
 package com.genvict.widget;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -7,9 +8,7 @@ import android.widget.Toast;
 import com.genvict.widgets.JMenuButton;
 import com.genvict.widgets.JMenuItem;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private JMenuButton testMenuButton;
     private JMenuItem versoin;
     private JMenuItem setting;

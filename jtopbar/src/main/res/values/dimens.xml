@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="JTopBarDefHeight">75dp</dimen>
+    <dimen name="JTopBarIconDefWidth">16dp</dimen>
+    <dimen name="JTopBarIconDefHeight">16dp</dimen>
+    <dimen name="JTopBarMainTitleDefTextSize">16sp</dimen>
+    <dimen name="JTopBarSubTitleDefTextSize">12sp</dimen>
+    <dimen name="JTopBarLeftTitleDefTextSize">12sp</dimen>
+</resources>
