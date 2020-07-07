@@ -25,7 +25,7 @@
             android:layout_width="@dimen/JTopBarIconDefWidth"
             android:layout_height="@dimen/JTopBarIconDefHeight"
             android:visibility="visible"
-            app:srcCompat="@mipmap/back" />
+            android:src="@mipmap/back" />
 
         <TextView
             android:id="@+id/tv_left_title"
@@ -55,7 +55,7 @@
             android:id="@+id/icon_right"
             android:layout_width="@dimen/JTopBarIconDefWidth"
             android:layout_height="@dimen/JTopBarIconDefHeight"
-            app:srcCompat="@mipmap/more" />
+            android:src="@mipmap/more" />
 
     </LinearLayout>
 

@@ -142,7 +142,7 @@ public class JMenuItem extends LinearLayout {
      */
     public JMenuItem setShowUnreadIcon(boolean isShow) {
         if (mIconUnread != null) {
-            mIconUnread.setVisibility(isShow ? View.VISIBLE : View.GONE);
+            mIconUnread.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
         }
         return this;
     }
@@ -154,7 +154,7 @@ public class JMenuItem extends LinearLayout {
      */
     public JMenuItem setShowArrowIcon(boolean isShow) {
         if (mIconArrow != null) {
-            mIconArrow.setVisibility(isShow ? View.VISIBLE : View.GONE);
+            mIconArrow.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
         }
         return this;
     }

@@ -16,8 +16,8 @@
         app:leftTitle="返回"
         app:mainTitle="个人中心"
         app:subTitle="这是子标题"
-        app:topbarBgColor="@color/colorPrimary"/>
-
+        app:topbarBgColor="@color/colorPrimary"
+        app:showRightItem="true"/>
 
     <com.genvict.widgets.JMenuButton
         android:id="@+id/testMenuBtn"
@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             app:mainTitle="我的收藏"
             app:icon="@mipmap/favorite"
+            app:showUnreadIcon="true"
             app:showDivideLine="true"
             app:showSubTitle="true"
             app:subTitle="查看收藏" />

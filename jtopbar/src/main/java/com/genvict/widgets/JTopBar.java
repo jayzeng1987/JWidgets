@@ -197,8 +197,8 @@ public class JTopBar extends ConstraintLayout {
             setRightIconSize(iconWidth, iconHeight);
 
             setLeftTitle(ta.getString(R.styleable.JTopBar_leftTitle));
-            setMainTitle(ta.getString(R.styleable.JTopBar_topbarMainTitle));
-            setSubTitle(ta.getString(R.styleable.JTopBar_topbarSubTitle));
+            setMainTitle(ta.getString(R.styleable.JTopBar_mainTitle));
+            setSubTitle(ta.getString(R.styleable.JTopBar_subTitle));
 
             setTitleTextColor(ta.getColor(R.styleable.JTopBar_topbarTextColor, getResources().getColor(R.color.JTopBarDefTextColor)));
             setLeftTitleTextSize(ta.getDimensionPixelSize(R.styleable.JTopBar_leftTitleTextSize, (int) getResources().getDimension(R.dimen.JTopBarLeftTitleDefTextSize)));
