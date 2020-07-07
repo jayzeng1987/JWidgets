@@ -10,45 +10,52 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
         android:background="@color/JMenuItemDivideLineColor"
-        android:visibility="visible"/>
+        android:visibility="visible" />
+
     <View
         android:id="@+id/view_divide_area"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/JMenuItemDivideAreaColor"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/ll_item"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingStart="15dp"
-        android:paddingEnd="15dp">
+        android:paddingLeft="15dp"
+        android:paddingEnd="15dp"
+        android:paddingRight="15dp">
 
 
         <ImageView
             android:id="@+id/icon_main"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@mipmap/ic_launcher"
-            android:contentDescription="icon" />
+            android:contentDescription="icon"
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
             android:text="主标题" />
+
         <TextView
             android:id="@+id/tv_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
             android:gravity="right"
             android:text="子标题" />
 
@@ -56,17 +63,17 @@
             android:id="@+id/icon_unread"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:src="@mipmap/unread"
             android:contentDescription="unread"
-            android:visibility="visible"/>
+            android:src="@mipmap/unread"
+            android:visibility="visible" />
 
         <ImageView
             android:id="@+id/icon_arrow"
             android:layout_width="15dp"
             android:layout_height="15dp"
+            android:contentDescription="icon"
             android:src="@mipmap/arrow"
-            android:visibility="visible"
-            android:contentDescription="icon"/>
+            android:visibility="visible" />
     </LinearLayout>
 
 </LinearLayout>

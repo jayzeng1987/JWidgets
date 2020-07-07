@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.genvict.widgets.JTopBar
+    <com.genvict.widgets.jtb.JTopBar
         android:id="@+id/JTopBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         app:topbarBgColor="@color/colorPrimary"
         app:showRightItem="true"/>
 
-    <com.genvict.widgets.JMenuButton
+    <com.genvict.widgets.jmb.JMenuButton
         android:id="@+id/testMenuBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,14 +45,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/testMenuBtn">
 
-        <com.genvict.widgets.JMenuItem
+        <com.genvict.widgets.jmi.JMenuItem
             android:id="@+id/me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:mainTitle="个人中心"
             app:icon="@mipmap/me"/>
 
-        <com.genvict.widgets.JMenuItem
+        <com.genvict.widgets.jmi.JMenuItem
             android:id="@+id/setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             app:showDivideArea="true"
             app:showSubTitle="true" />
 
-        <com.genvict.widgets.JMenuItem
+        <com.genvict.widgets.jmi.JMenuItem
             android:id="@+id/favorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             app:showSubTitle="true"
             app:subTitle="查看收藏" />
 
-        <com.genvict.widgets.JMenuItem
+        <com.genvict.widgets.jmi.JMenuItem
             android:id="@+id/versoin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

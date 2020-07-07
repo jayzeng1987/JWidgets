@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.genvict.widgets.JMenuButton;
-import com.genvict.widgets.JMenuItem;
+import com.genvict.widgets.jmb.JMenuButton;
+import com.genvict.widgets.jmi.JMenuItem;
 
 public class MainActivity extends Activity {
     private JMenuButton testMenuButton;

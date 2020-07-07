@@ -6,7 +6,7 @@
         <attr name="leftTitle" format="string" />
         <attr name="mainTitle" format="string" />
         <attr name="subTitle" format="string" />
-        <attr name="topbarTextColor" format="color" />
+        <attr name="textColor" format="color" />
         <attr name="leftTitleTextSize" format="dimension" />
         <attr name="mainTitleTextSize" format="dimension" />
         <attr name="subTitleTextSize" format="dimension" />
