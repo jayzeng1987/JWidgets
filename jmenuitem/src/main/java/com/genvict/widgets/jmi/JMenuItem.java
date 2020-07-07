@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -234,7 +235,7 @@ public class JMenuItem extends LinearLayout {
      * @return JMenuItem
      */
     public JMenuItem setItemSelectorColor(int pressedColorId, int normalColorId) {
-        if (mMainView != null) {
+        if (mMainView != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             GradientDrawable pressed = new GradientDrawable();
             pressed.setColor(pressedColorId);
             GradientDrawable normal = new GradientDrawable();
