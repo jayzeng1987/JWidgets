@@ -1,4 +1,4 @@
-package com.genvict.widgets.jtopbar;
+package com.genvict.widgets.jtb;
 
 import android.content.Context;
 

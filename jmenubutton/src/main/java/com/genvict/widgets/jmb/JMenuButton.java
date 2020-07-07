@@ -1,4 +1,4 @@
-package com.genvict.widgets;
+package com.genvict.widgets.jmb;
 
 import android.content.Context;
 import android.content.res.TypedArray;

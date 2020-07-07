@@ -1,4 +1,4 @@
-package com.genvict.widgets;
+package com.genvict.widgets.jtb;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.genvict.widgets.jtopbar.R;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -200,7 +198,7 @@ public class JTopBar extends ConstraintLayout {
             setMainTitle(ta.getString(R.styleable.JTopBar_mainTitle));
             setSubTitle(ta.getString(R.styleable.JTopBar_subTitle));
 
-            setTitleTextColor(ta.getColor(R.styleable.JTopBar_topbarTextColor, getResources().getColor(R.color.JTopBarDefTextColor)));
+            setTitleTextColor(ta.getColor(R.styleable.JTopBar_textColor, getResources().getColor(R.color.JTopBarDefTextColor)));
             setLeftTitleTextSize(ta.getDimensionPixelSize(R.styleable.JTopBar_leftTitleTextSize, (int) getResources().getDimension(R.dimen.JTopBarLeftTitleDefTextSize)));
             setMainTitleTextSize(ta.getDimensionPixelSize(R.styleable.JTopBar_mainTitleTextSize, (int) getResources().getDimension(R.dimen.JTopBarMainTitleDefTextSize)));
             setSubTitleTextSize(ta.getDimensionPixelSize(R.styleable.JTopBar_leftTitleTextSize, (int) getResources().getDimension(R.dimen.JTopBarLeftTitleDefTextSize)));
