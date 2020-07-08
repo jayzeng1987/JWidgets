@@ -50,14 +50,15 @@ public class MainActivity extends Activity {
         });
 
         topBar = findViewById(R.id.topbar);
-        topBar.setLeftIconClickListener(new JTopBar.OnIconClick() {
+        topBar.setLeftIconClickListener(new View.OnClickListener() {
             @Override
-            public void onClick() {
+            public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click left icon button!", Toast.LENGTH_SHORT).show();
+
             }
-        }).setRightIconClickListener(new JTopBar.OnIconClick() {
+        }).setRightIconClickListener(new View.OnClickListener() {
             @Override
-            public void onClick() {
+            public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click right icon button!", Toast.LENGTH_SHORT).show();
             }
         });

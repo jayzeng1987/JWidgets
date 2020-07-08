@@ -17,6 +17,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+/**
+ * 自定义顶部标题栏
+ * @author jayz
+ */
 public class JTopBar extends ConstraintLayout {
     private Context mContext;
     private View mRootView;
@@ -54,6 +58,11 @@ public class JTopBar extends ConstraintLayout {
         this.init(context, attrs);
     }
 
+    /**
+     * 设置左侧图标
+     * @param iconId 图标资源ID
+     * @return JTopBar
+     */
     public JTopBar setLeftIconId(int iconId) {
         if (mLeftIcon != null) {
             mLeftIcon.setImageResource(iconId);
@@ -61,6 +70,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置右侧图标
+     * @param iconId 图标资源ID
+     * @return JTopBar
+     */
     public JTopBar setRightIconId(int iconId) {
         if (mRightIcon != null) {
             mRightIcon.setImageResource(iconId);
@@ -68,6 +82,12 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置左侧图标尺寸
+     * @param width 宽度
+     * @param height 高度
+     * @return JTopBar
+     */
     public JTopBar setLeftIconSize(int width, int height) {
         if (mLeftIcon != null) {
             ViewGroup.LayoutParams lp = mLeftIcon.getLayoutParams();
@@ -78,6 +98,12 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置右侧图标尺寸
+     * @param width 宽度
+     * @param height 高度
+     * @return JTopBar
+     */
     public JTopBar setRightIconSize(int width, int height) {
         if (mRightIcon != null) {
             ViewGroup.LayoutParams lp = mRightIcon.getLayoutParams();
@@ -88,6 +114,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置左侧标题
+     * @param title 标题
+     * @return JTopBar
+     */
     public JTopBar setLeftTitle(String title) {
         if (mTvLeftTitle != null) {
             mTvLeftTitle.setText(title);
@@ -95,6 +126,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置中间主标题
+     * @param title 标题
+     * @return JTopBar
+     */
     public JTopBar setMainTitle(String title) {
         if (mTvMainTitle != null) {
             mTvMainTitle.setText(title);
@@ -102,6 +138,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置中间子标题
+     * @param title 标题
+     * @return JTopBar
+     */
     public JTopBar setSubTitle(String title) {
         if (mTvSubTitle != null) {
             mTvSubTitle.setText(title);
@@ -109,6 +150,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置标题文字颜色
+     * @param colorId 颜色资源ID
+     * @return JTopBar
+     */
     public JTopBar setTitleTextColor(int colorId) {
         if (mTvLeftTitle != null && mTvMainTitle != null && mTvSubTitle != null) {
             mTvLeftTitle.setTextColor(colorId);
@@ -118,6 +164,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置左标题文字大小
+     * @param size 大小
+     * @return JTopBar
+     */
     public JTopBar setLeftTitleTextSize(int size) {
         if (mTvLeftTitle != null) {
             mTvLeftTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
@@ -125,6 +176,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置中间主标题文字大小
+     * @param size 大小
+     * @return JTopBar
+     */
     public JTopBar setMainTitleTextSize(int size) {
         if (mTvMainTitle != null) {
             mTvMainTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
@@ -132,6 +188,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置中间子标题文字大小
+     * @param size 大小
+     * @return JTopBar
+     */
     public JTopBar setSubTitleTextSize(int size) {
         if (mTvSubTitle != null) {
             mTvSubTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
@@ -139,6 +200,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示左标题
+     * @param isShow true：显示，false：不显示（默认false）
+     * @return JTopBar
+     */
     public JTopBar setShowLeftTitle(boolean isShow) {
         if (mTvLeftTitle != null) {
             mTvLeftTitle.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -146,6 +212,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示左边图标和标题
+     * @param isShow true：显示，false：不显示（默认true）
+     * @return JTopBar
+     */
     public JTopBar setShowLeftItem(boolean isShow) {
         if (mLeftItem != null) {
             mLeftItemIsShow = isShow;
@@ -154,6 +225,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示右图标
+     * @param isShow true：显示，false：不显示（默认false）
+     * @return JTopBar
+     */
     public JTopBar setShowRightItem(boolean isShow) {
         if (mRightItem != null) {
             mRightItemIsShow = isShow;
@@ -162,6 +238,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置是否显示中间子标题
+     * @param isShow true：显示，false：不显示（默认false）
+     * @return JTopBar
+     */
     public JTopBar setShowSubTitle(boolean isShow) {
         if (mTvSubTitle != null) {
             mTvSubTitle.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -169,6 +250,11 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
+    /**
+     * 设置标题栏高度
+     * @param height 高度
+     * @return JTopBar
+     */
     public JTopBar setTopBarHeight(int height) {
         if (mWrapView != null) {
             ViewGroup.LayoutParams lp = mWrapView.getLayoutParams();
@@ -178,41 +264,47 @@ public class JTopBar extends ConstraintLayout {
         return this;
     }
 
-    public JTopBar setBgColor(int colorId) {
+    /**
+     * 设置标题栏背景色
+     * @param colorId 颜色资源ID
+     * @return JTopBar
+     */
+    public JTopBar setTopBarBgColor(int colorId) {
         if (mWrapView != null) {
             mWrapView.setBackgroundColor(colorId);
         }
         return this;
     }
 
-    public interface OnIconClick{
-        void onClick();
-    }
-
-    public JTopBar setLeftIconClickListener(final OnIconClick onIconClick) {
-        if (mLeftIcon != null) {
-            mLeftIcon.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onIconClick.onClick();
-                }
-            });
+    /**
+     * 设置左图标点击事件
+     * @param listener OnClickListener点击事件
+     * @return JTopBar
+     */
+    public JTopBar setLeftIconClickListener(View.OnClickListener listener) {
+        if (mLeftIcon != null && mLeftItemIsShow) {
+            mLeftIcon.setOnClickListener(listener);
         }
         return this;
     }
 
-    public JTopBar setRightIconClickListener(final OnIconClick onIconClick) {
-        if (mRightIcon != null) {
-            mRightIcon.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onIconClick.onClick();
-                }
-            });
+    /**
+     * 设置右图标点击事件
+     * @param listener OnClickListener点击事件
+     * @return JTopBar
+     */
+    public JTopBar setRightIconClickListener(View.OnClickListener listener) {
+        if (mRightIcon != null && mRightItemIsShow) {
+            mRightIcon.setOnClickListener(listener);
         }
         return this;
     }
 
+    /**
+     * 初始化
+     * @param context 上下文资源
+     * @param attrs 属性集合
+     */
     private void init(Context context, @Nullable AttributeSet attrs) {
         mContext = context;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -255,7 +347,7 @@ public class JTopBar extends ConstraintLayout {
             int topbarHeight = (int) ta.getDimension(R.styleable.JTopBar_topbarHeight, getResources().getDimension(R.dimen.JTopBarDefHeight));
             setTopBarHeight(topbarHeight);
 
-            setBgColor(ta.getColor(R.styleable.JTopBar_topbarBgColor, getResources().getColor(R.color.JTopBarDefBgColor)));
+            setTopBarBgColor(ta.getColor(R.styleable.JTopBar_topbarBgColor, getResources().getColor(R.color.JTopBarDefBgColor)));
 
             setItemClickEffect(mLeftIcon);
             setItemClickEffect(mRightIcon);

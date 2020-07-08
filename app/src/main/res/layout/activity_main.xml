@@ -17,7 +17,7 @@
         app:mainTitle="个人中心"
         app:subTitle="这是子标题"
         app:topbarBgColor="@color/colorPrimary"
-        app:showRightItem="true"/>
+        app:showRightItem="true" />
 
     <com.genvict.widgets.jmb.JMenuButton
         android:id="@+id/testMenuBtn"
