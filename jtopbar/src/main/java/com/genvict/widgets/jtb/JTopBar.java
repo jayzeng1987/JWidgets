@@ -2,9 +2,12 @@ package com.genvict.widgets.jtb;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,6 +29,17 @@ public class JTopBar extends ConstraintLayout {
     private TextView mTvLeftTitle;
     private TextView mTvMainTitle;
     private TextView mTvSubTitle;
+
+    private boolean mLeftItemIsShow;
+    private boolean mRightItemIsShow;
+
+    final private ColorMatrix colorMatrix = new ColorMatrix(
+            new float[] { 0.5F, 0, 0, 0, 0, 0, 0.5F, 0, 0, 0, 0, 0, 0.5F, 0, 0, 0, 0, 0, 1, 0, });
+
+    @Override
+    public void dispatchSetSelected(boolean selected) {
+        super.dispatchSetSelected(selected);
+    }
 
     public JTopBar(Context context) {
         this(context, null);
@@ -134,6 +148,7 @@ public class JTopBar extends ConstraintLayout {
 
     public JTopBar setShowLeftItem(boolean isShow) {
         if (mLeftItem != null) {
+            mLeftItemIsShow = isShow;
             mLeftItem.setVisibility(isShow ? View.VISIBLE : View.GONE);
         }
         return this;
@@ -141,6 +156,7 @@ public class JTopBar extends ConstraintLayout {
 
     public JTopBar setShowRightItem(boolean isShow) {
         if (mRightItem != null) {
+            mRightItemIsShow = isShow;
             mRightItem.setVisibility(isShow ? View.VISIBLE : View.GONE);
         }
         return this;
@@ -165,6 +181,34 @@ public class JTopBar extends ConstraintLayout {
     public JTopBar setBgColor(int colorId) {
         if (mWrapView != null) {
             mWrapView.setBackgroundColor(colorId);
+        }
+        return this;
+    }
+
+    public interface OnIconClick{
+        void onClick();
+    }
+
+    public JTopBar setLeftIconClickListener(final OnIconClick onIconClick) {
+        if (mLeftIcon != null) {
+            mLeftIcon.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onIconClick.onClick();
+                }
+            });
+        }
+        return this;
+    }
+
+    public JTopBar setRightIconClickListener(final OnIconClick onIconClick) {
+        if (mRightIcon != null) {
+            mRightIcon.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onIconClick.onClick();
+                }
+            });
         }
         return this;
     }
@@ -213,6 +257,9 @@ public class JTopBar extends ConstraintLayout {
 
             setBgColor(ta.getColor(R.styleable.JTopBar_topbarBgColor, getResources().getColor(R.color.JTopBarDefBgColor)));
 
+            setItemClickEffect(mLeftIcon);
+            setItemClickEffect(mRightIcon);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -221,5 +268,26 @@ public class JTopBar extends ConstraintLayout {
             }
         }
 
+    }
+
+    private void setItemClickEffect(final ImageView view) {
+        if (view != null) {
+            view.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            view.getDrawable().setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                        case MotionEvent.ACTION_UP:
+                            view.getDrawable().setColorFilter(null);
+                            break;
+                        default:
+                    }
+                    return false;
+                }
+            });
+        }
     }
 }

@@ -38,6 +38,7 @@
             android:textColor="@color/JTopBarDefTextColor"
             android:textSize="@dimen/JTopBarSubTitleDefTextSize"
             android:visibility="visible" />
+
     </LinearLayout>
 
     <LinearLayout

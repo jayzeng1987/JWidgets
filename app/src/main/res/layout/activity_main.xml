@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <com.genvict.widgets.jtb.JTopBar
-        android:id="@+id/JTopBar"
+        android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
         app:iconClickEffect="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/JTopBar"
+        app:layout_constraintTop_toBottomOf="@+id/topbar"
         app:title="测试按钮"
         app:titleMarginTop="8dp"
         app:titleTextColor="@color/JMenuItemTextColorLight"

@@ -7,11 +7,14 @@ import android.widget.Toast;
 
 import com.genvict.widgets.jmb.JMenuButton;
 import com.genvict.widgets.jmi.JMenuItem;
+import com.genvict.widgets.jtb.JTopBar;
 
 public class MainActivity extends Activity {
     private JMenuButton testMenuButton;
     private JMenuItem versoin;
     private JMenuItem setting;
+
+    private JTopBar topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,19 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click the menu item!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        topBar = findViewById(R.id.topbar);
+        topBar.setLeftIconClickListener(new JTopBar.OnIconClick() {
+            @Override
+            public void onClick() {
+                Toast.makeText(MainActivity.this, "You click left icon button!", Toast.LENGTH_SHORT).show();
+            }
+        }).setRightIconClickListener(new JTopBar.OnIconClick() {
+            @Override
+            public void onClick() {
+                Toast.makeText(MainActivity.this, "You click right icon button!", Toast.LENGTH_SHORT).show();
             }
         });
     }
