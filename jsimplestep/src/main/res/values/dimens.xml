@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="stepCircleDefRadius">12dp</dimen>
+    <dimen name="stepNumDefTextSize">12sp</dimen>
+    <dimen name="stepTitleDefTextSize">12sp</dimen>
+    <dimen name="stepTitleDefTopSpace">5dp</dimen>
+    <dimen name="stepLineDefStrokeWidth">2dp</dimen>
+</resources>

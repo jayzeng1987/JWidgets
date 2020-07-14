@@ -13,6 +13,10 @@ import com.genvict.widgets.jtb.JTopBar;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 测试Demo
+ * @author jayz
+ */
 public class MainActivity extends Activity {
     private JMenuButton testMenuButton;
     private JMenuItem versoin;
@@ -21,6 +25,7 @@ public class MainActivity extends Activity {
     private JTopBar topBar;
 
     private JSimpleStepView stepView;
+    private List<String> stepList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +37,11 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click the menu button!", Toast.LENGTH_SHORT).show();
-                int step = stepView.getCurrentStep() + 1;
-                stepView.setCurrentStep(step);
+                int step = stepView.getCurrentStepNum() + 1;
+                if (step > stepList.size()) {
+                    step = 1;
+                }
+                stepView.setCurrentStepNum(step);
             }
         });
         testMenuButton.setTitle("这是一个菜单按钮")
@@ -62,6 +70,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click left icon button!", Toast.LENGTH_SHORT).show();
+                finish();
 
             }
         }).setRightIconClickListener(new View.OnClickListener() {
@@ -72,11 +81,12 @@ public class MainActivity extends Activity {
         });
 
         stepView = findViewById(R.id.simpleStep);
+        stepView.setStepItemSize(5);
         //步骤内容列表
-        List<String> stepList = new ArrayList<>(6);
+        stepList = new ArrayList<>(6);
         stepList.add("步骤1");
         stepList.add("步骤2");
-        stepList.add("步骤3");
+        stepList.add("这是步骤3");
         stepList.add("步骤4");
         stepView.setStepContentList(stepList);
     }

@@ -1,8 +1,8 @@
 package com.genvict.jsimplestep;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathDashPathEffect;
@@ -14,36 +14,111 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
+/**
+ * 自定义简单步骤指示器控件
+ * @author jayz
+ */
 public class JSimpleStepView extends View {
+    private Context mContext;
 
-    private int mStepItemSize = 0;
-    private boolean mIsShowTitle = true;
+    /**
+     * 控件视图宽度
+     */
+    private int mViewWidth;
+    /**
+     * 控件视图高度
+     */
+    private int mViewHeight;
+    /**
+     * 步骤数，当设置了步骤标题内容列表后，该值等于步骤标题内容列表的长度
+     */
+    private int mStepItemSize;
+    /**
+     * 是否显示步骤标题 true：显示，false：不显示（默认true）
+     */
+    private boolean mIsShowTitle;
+    /**
+     * 步骤标题内容列表
+     */
+    private List<String> mStepContentList;
+    /**
+     * 当前步骤序号
+     */
+    private int mCurrentStepNum = 1;
+
+    /**
+     * 圆形画笔
+     */
     private Paint mStepCirclePaint;
+    /**
+     * 步骤序号画笔
+     */
     private Paint mStepNumPaint;
+    /**
+     * 步骤标题画笔
+     */
     private Paint mStepTitlePaint;
+    /**
+     * 步骤连接线画笔
+     */
     private Paint mBaseStepLinePaint;
+    /**
+     * 完成的步骤连接线画笔
+     */
     private Paint mFinishStepLinePaint;
+    /**
+     * 下一步步骤连接线画笔
+     */
     private Paint mNextStepLinePaint;
 
-    private int mStepCircleRadius = 35;
-    private int mStepTitleHeight = 100;
-    private int mStepNumTextSize = 35;
-    private int mStepTitleTextSize = 30;
-    private int mTitleTopSpace = 10;
-    private List<String> mStepContentList;
-    private int mCurrentStep = 1;
-    private float mStepLineStrokeWidth = 5.0f;
-
-    private int mUndoStepColorId = Color.GRAY;
-    private int mFinishStepColorId = Color.BLACK;
-    private int mFinishStepLineColorId = Color.BLACK;
-    private int mBaseStepLineColorId = Color.GRAY;
-    private int mNextStepLineColorId = Color.GRAY;
-    private int mStepNumTextColorId = Color.WHITE;
-
-
-    private int mViewWidth;
-    private int mViewHeight;
+    /**
+     * 圆的半径
+     */
+    private int mStepCircleRadius;
+    /**
+     * 步骤标题高度
+     */
+    private int mStepTitleHeight;
+    /**
+     * 步骤序号文字大小
+     */
+    private int mStepNumTextSize;
+    /**
+     * 步骤标题文字大小
+     */
+    private int mStepTitleTextSize;
+    /**
+     * 步骤标题顶部空白间隔
+     */
+    private int mStepTitleTopSpace;
+    /**
+     * 步骤连接线宽度
+     */
+    private float mStepLineStrokeWidth;
+    /**
+     * 未完成步骤颜色
+     */
+    private int mUndoStepColorId;
+    /**
+     * 已完成步骤颜色
+     */
+    private int mFinishStepColorId;
+    /**
+     * 已完成步骤连接线颜色
+     */
+    private int mFinishStepLineColorId;
+    /**
+     * 基础连接线颜色
+     */
+    private int mBaseStepLineColorId;
+    /**
+     * 下一步连接线颜色
+     */
+    private int mNextStepLineColorId;
+    /**
+     * 步骤序号文字颜色
+     */
+    private int mStepNumTextColorId;
 
     public JSimpleStepView(Context context) {
         this(context, null, 0);
@@ -55,50 +130,202 @@ public class JSimpleStepView extends View {
 
     public JSimpleStepView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        initAttrs(context, attrs);
+        initPaint();
     }
 
-    public void setStepContentList(List<String> list) {
+    /**
+     * 设置步骤数，当调用了setStepContentList设置步骤内容后，该方法无效，StepItemSize值等于StepContentList的大小
+     * @param size 数量
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setStepItemSize(int size) {
+        if (mStepContentList != null && mStepContentList.size() > 0) {
+            return this;
+        }
+        this.mStepItemSize = size;
+        return this;
+    }
+
+    /**
+     * 设置步骤内容列表
+     * @param list 内容列表
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setStepContentList(List<String> list) {
         if (this.mStepContentList == null) {
             this.mStepContentList = new ArrayList<>(1);
         }
         this.mStepContentList.clear();
         this.mStepContentList.addAll(list);
         mStepItemSize = mStepContentList.size();
+        return this;
     }
 
-    public void setCurrentStep(int step) {
-        this.mCurrentStep = step;
+    /**
+     * 是否显示步骤标题
+     * @param isShowTitle true：显示，false：不显示
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setIsShowTitle(boolean isShowTitle) {
+        this.mIsShowTitle = isShowTitle;
         invalidate();
+        return this;
     }
 
-    public int getCurrentStep() {
-        return mCurrentStep;
+    /**
+     * 设置当前步骤
+     * @param stepNum 步骤序号
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setCurrentStepNum(int stepNum) {
+        this.mCurrentStepNum = stepNum;
+        invalidate();
+        return this;
     }
 
-    public void setCircleRadius(int circleRadius) {
+    /**
+     * 获取当前步骤序号
+     * @return 步骤序号
+     */
+    public int getCurrentStepNum() {
+        return mCurrentStepNum;
+    }
+
+    /**
+     * 设置圆的半径
+     * @param circleRadius 圆的半径
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setCircleRadius(int circleRadius) {
         this.mStepCircleRadius = circleRadius;
+        return this;
     }
 
-    public void setStepNumTextSize(int stepNumTextSize) {
-        this.mStepNumTextSize = stepNumTextSize;
+    /**
+     * 设置步骤序号文字大小
+     * @param textSize 文字大小
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setStepNumTextSize(int textSize) {
+        this.mStepNumTextSize = textSize;
+        return this;
     }
 
-    public void setStepTitleTextSize(int stepTitleTextSize) {
-        this.mStepTitleTextSize = stepTitleTextSize;
+    /**
+     * 设置步骤标题文字大小
+     * @param textSize 文字大小
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setStepTitleTextSize(int textSize) {
+        this.mStepTitleTextSize = textSize;
+        return this;
     }
 
-    public void setTitleTopSpace(int titleTopSpace) {
-        this.mTitleTopSpace = titleTopSpace;
+    /**
+     * 设置标题顶部空白间隔
+     * @param titleTopSpace 空白间隔
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setTitleTopSpace(int titleTopSpace) {
+        this.mStepTitleTopSpace = titleTopSpace;
+        return this;
     }
 
-    public void setStepLineStrokeWidth(int width) {
+    /**
+     * 步骤连接线宽度
+     * @param width 宽度
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setStepLineStrokeWidth(int width) {
         this.mStepLineStrokeWidth = width;
+        return this;
     }
 
-    private void init() {
-        initPaint();
+    /**
+     * 设置未完成步骤颜色
+     * @param colorId 颜色资源ID
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setUndoStepColorId(int colorId) {
+        this.mUndoStepColorId = colorId;
+        return this;
+    }
 
+    /**
+     * 设置已完成步骤颜色
+     * @param colorId 颜色资源ID
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setFinishStepColorId(int colorId) {
+        this.mFinishStepColorId = colorId;
+        return this;
+    }
+
+    /**
+     * 设置未完成步骤连接线颜色
+     * @param colorId 颜色资源ID
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setFinishStepLineColorId(int colorId) {
+        this.mFinishStepLineColorId = colorId;
+        return this;
+    }
+
+    /**
+     * 设置基础连接线颜色
+     * @param colorId 颜色资源ID
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setBaseStepLineColorId(int colorId) {
+        this.mBaseStepLineColorId = colorId;
+        return this;
+    }
+
+    /**
+     * 设置下一步骤连接线颜色
+     * @param colorId 颜色资源ID
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setNextStepLineColorId(int colorId) {
+        this.mNextStepLineColorId = colorId;
+        return this;
+    }
+
+    /**
+     * 设置步骤序号文字颜色
+     * @param colorId 颜色资源ID
+     * @return JSimpleStepView
+     */
+    public JSimpleStepView setStepNumTextColorId(int colorId) {
+        this.mStepNumTextColorId = colorId;
+        return this;
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs) {
+        this.mContext = context;
+        TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.JSimpleStepView);
+        try {
+            setIsShowTitle(ta.getBoolean(R.styleable.JSimpleStepView_isShowTitle, true));
+            setCircleRadius((int) ta.getDimension(R.styleable.JSimpleStepView_stepCircleRadius, getResources().getDimension(R.dimen.stepCircleDefRadius)));
+            setStepNumTextSize((int) ta.getDimension(R.styleable.JSimpleStepView_stepNumTextSize, getResources().getDimension(R.dimen.stepNumDefTextSize)));
+            setStepTitleTextSize((int) ta.getDimension(R.styleable.JSimpleStepView_stepTitleTextSize, getResources().getDimension(R.dimen.stepTitleDefTextSize)));
+            setTitleTopSpace((int) ta.getDimension(R.styleable.JSimpleStepView_stepTitleTopSpace, getResources().getDimension(R.dimen.stepTitleDefTopSpace)));
+            setStepLineStrokeWidth((int) ta.getDimension(R.styleable.JSimpleStepView_stepLineStrokeWidth, getResources().getDimension(R.dimen.stepLineDefStrokeWidth)));
+
+            setUndoStepColorId(ta.getColor(R.styleable.JSimpleStepView_undoStepColor, getResources().getColor(R.color.undoStepDefColor)));
+            setFinishStepColorId(ta.getColor(R.styleable.JSimpleStepView_finishStepColor, getResources().getColor(R.color.finishStepDefColor)));
+            setFinishStepLineColorId(ta.getColor(R.styleable.JSimpleStepView_finishStepLineColor, getResources().getColor(R.color.finishStepLineDefColor)));
+            setBaseStepLineColorId(ta.getColor(R.styleable.JSimpleStepView_baseStepLineColor, getResources().getColor(R.color.baseStepLineDefColor)));
+            setNextStepLineColorId(ta.getColor(R.styleable.JSimpleStepView_nextStepLineColor, getResources().getColor(R.color.nextStepLineDefColor)));
+            setStepNumTextColorId(ta.getColor(R.styleable.JSimpleStepView_stepNumTextColor, getResources().getColor(R.color.stepNumTextDefColor)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (ta != null) {
+                ta.recycle();
+            }
+        }
     }
 
     private void initPaint() {
@@ -146,7 +373,7 @@ public class JSimpleStepView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+        //获取测量的宽高的size和mode
         final int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
         final int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
         final int measureWidthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -183,7 +410,7 @@ public class JSimpleStepView extends View {
             //width：match_parent 宽度为父控件测量建议值
             //height：wrap_content 高度需自行计算
             mViewWidth = measureWidth;
-            mViewHeight = mIsShowTitle ? (mStepCircleRadius * 2 + mStepTitleHeight + mTitleTopSpace + 25) : mStepCircleRadius * 2;
+            mViewHeight = mIsShowTitle ? (mStepCircleRadius * 2 + mStepTitleHeight + mStepTitleTopSpace + 25) : mStepCircleRadius * 2;
         }
 
         setMeasuredDimension(mViewWidth, mViewHeight);
@@ -197,7 +424,7 @@ public class JSimpleStepView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mStepContentList.size() == 0) {
+        if (mStepItemSize == 0) {
             return;
         }
         //x,y：圆形中心坐标
@@ -207,14 +434,39 @@ public class JSimpleStepView extends View {
         //每个步骤项的宽度
         int stepItemWidth = mViewWidth / mStepItemSize;
         //标题Y坐标相对于圆形Y坐标的偏移量
-        int titleYOffset = mStepCircleRadius + measureTextHeight(mStepTitlePaint) + mTitleTopSpace;
+        int titleYOffset = mStepCircleRadius + measureTextHeight(mStepTitlePaint) + mStepTitleTopSpace;
         //循环画图形、标题、连接线
         for (int i = 0; i < mStepItemSize; i++) {
             //计算每个圆形的中心点
             x = (stepItemWidth/2) * (2 * i + 1);
             y = (mViewHeight - mStepTitleHeight) / 2;
+
+            //画连接线
+            //计算连接线起始坐标
+            lineStartX = x + mStepCircleRadius;
+            lineStartY = y;
+            //计算连接线终点坐标
+            lineEndX = (stepItemWidth - 2 * mStepCircleRadius) + lineStartX;
+            lineEndY = y;
+
+            if (i < mStepItemSize - 1) {
+                //禁止硬件加速，硬件加速导致无法显示虚线
+                setLayerType(LAYER_TYPE_SOFTWARE, null);
+                //未完成步骤连接线（点线）
+                canvas.drawLine(lineStartX, lineStartY, lineEndX, lineEndY, mBaseStepLinePaint);
+
+                if (i < mCurrentStepNum - 1) {
+                    //已完成步骤连接线
+                    canvas.drawLine(lineStartX, lineStartY, lineEndX, lineEndY, mFinishStepLinePaint);
+                } else if (i == mCurrentStepNum - 1) {
+                    //下一步骤连接线，画一半实线
+                    int targetEndX = (lineEndX - lineStartX) /2 + lineStartX;
+                    canvas.drawLine(lineStartX, lineStartY, targetEndX, lineEndY, mNextStepLinePaint);
+                }
+            }
+
             //画圆形背景
-            if (i < mCurrentStep) {
+            if (i < mCurrentStepNum) {
                 //当前步骤或之前的步骤
                 mStepCirclePaint.setColor(mFinishStepColorId);
                 mStepTitlePaint.setColor(mFinishStepColorId);
@@ -226,38 +478,20 @@ public class JSimpleStepView extends View {
             //画圆
             canvas.drawCircle(x, y, mStepCircleRadius, mStepCirclePaint);
             //画步骤序号
-            canvas.drawText(String.valueOf(i + 1), x, y + getBaseY(mStepNumPaint), mStepNumPaint);
+            canvas.drawText(String.valueOf(i + 1), x, y + getVerticalCenterOffset(mStepNumPaint), mStepNumPaint);
             //画步骤标题
             if (mIsShowTitle) {
                 canvas.drawText(mStepContentList.get(i), x, y + titleYOffset, mStepTitlePaint);
             }
-            //画连接线
-            //计算连接线起始坐标
-            lineStartX = x + mStepCircleRadius;
-            lineStartY = y;
-            //计算连接线终点坐标
-            lineEndX = (stepItemWidth - 2 * mStepCircleRadius) + lineStartX;
-            lineEndY = y;
-
-            if (i < mStepItemSize - 1) {
-                if (i < mCurrentStep - 1) {
-                    //已完成步骤连接线
-                    canvas.drawLine(lineStartX, lineStartY, lineEndX, lineEndY, mFinishStepLinePaint);
-                } else if (i == mCurrentStep - 1) {
-                    //下一步骤连接线
-                    canvas.drawLine(lineStartX, lineStartY, lineEndX, lineEndY, mNextStepLinePaint);
-                } else {
-                    //禁止硬件加速，硬件加速导致无法显示虚线
-                    setLayerType(LAYER_TYPE_SOFTWARE, null);
-                    //未完成步骤连接线（点线）
-                    canvas.drawLine(lineStartX, lineStartY, lineEndX, lineEndY, mBaseStepLinePaint);
-                }
-            }
         }
-
     }
 
-    private int getBaseY(Paint paint) {
+    /**
+     * 获取文字垂直居中便宜量
+     * @param paint 文字画笔
+     * @return 偏移量
+     */
+    private int getVerticalCenterOffset(Paint paint) {
         if (paint != null) {
             Paint.FontMetricsInt fm = paint.getFontMetricsInt();
             return ((fm.descent - fm.ascent) / 2- fm.descent);
@@ -265,6 +499,11 @@ public class JSimpleStepView extends View {
         return 0;
     }
 
+    /**
+     * 测量文字高度
+     * @param paint 文字画笔
+     * @return 文字高度
+     */
     private int measureTextHeight(Paint paint){
         int height = 0;
         if(null == paint){
@@ -274,6 +513,12 @@ public class JSimpleStepView extends View {
         return fm.descent - fm.ascent;
     }
 
+    /**
+     * 测量文字宽度
+     * @param paint 文字画笔
+     * @param text 文字内容
+     * @return 文字宽度
+     */
     private int measureTextWidth(Paint paint, String text) {
         int width = 0;
         if(null == paint){
@@ -282,6 +527,11 @@ public class JSimpleStepView extends View {
         return (int) paint.measureText(text);
     }
 
+    /**
+     * 获取文字列表中最大的宽度
+     * @param list 文字类别
+     * @return 最大宽度
+     */
     private int getMaxTextWidth(List<String> list) {
         int size = list.size();
         int maxWidth = 0;

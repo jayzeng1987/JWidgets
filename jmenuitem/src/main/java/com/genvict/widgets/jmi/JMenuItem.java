@@ -267,7 +267,7 @@ public class JMenuItem extends LinearLayout {
         mMainTitile = mView.findViewById(R.id.tv_main_title);
         mSubTitile = mView.findViewById(R.id.tv_sub_title);
 
-        TypedArray ta =  mContext.obtainStyledAttributes(attrs, R.styleable.JMenuItem);
+        TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.JMenuItem);
         try {
             setIconId(ta.getResourceId(R.styleable.JMenuItem_icon, R.mipmap.ic_launcher));
             int iconWidth = (int) ta.getDimension(R.styleable.JMenuItem_iconWidth, getResources().getDimension(R.dimen.JMenuItemIconDefaultWidth));

@@ -88,7 +88,14 @@
             android:id="@+id/simpleStep"
             android:layout_width="match_parent"
             android:layout_height="75dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/white"
+            android:layout_marginTop="5dp"
+            app:isShowTitle="true"
+            app:stepCircleRadius="12dp"
+            app:stepNumTextSize="11sp"
+            app:stepTitleTextSize="11sp"
+            app:baseStepLineColor="@color/backgroundColorGrayLight"
+            app:finishStepColor="@color/colorAccent"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="JSimpleStepView">
+        <attr name="isShowTitle" format="boolean" />
+        <attr name="stepCircleRadius" format="dimension" />
+        <attr name="stepNumTextSize" format="dimension" />
+        <attr name="stepTitleTextSize" format="dimension" />
+        <attr name="stepTitleTopSpace" format="dimension" />
+        <attr name="stepLineStrokeWidth" format="dimension" />
+        <attr name="undoStepColor" format="reference" />
+        <attr name="finishStepColor" format="reference" />
+        <attr name="finishStepLineColor" format="reference" />
+        <attr name="baseStepLineColor" format="reference" />
+        <attr name="nextStepLineColor" format="reference" />
+        <attr name="stepNumTextColor" format="reference" />
 
     </declare-styleable>
 </resources>
