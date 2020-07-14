@@ -83,6 +83,12 @@
             app:showUnreadIcon="true"
             app:showArrowIcon="false"
             app:subTitle="当前版本：1.0.0"/>
+
+        <com.genvict.jsimplestep.JSimpleStepView
+            android:id="@+id/simpleStep"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="@color/colorPrimary"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
