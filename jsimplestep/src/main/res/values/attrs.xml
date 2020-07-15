@@ -7,7 +7,9 @@
         <attr name="stepTitleTextSize" format="dimension" />
         <attr name="stepTitleTopSpace" format="dimension" />
         <attr name="stepLineStrokeWidth" format="dimension" />
+        <attr name="baseStepLineStrokeWidth" format="dimension" />
         <attr name="undoStepColor" format="reference" />
+        <attr name="currentStepColor" format="reference" />
         <attr name="finishStepColor" format="reference" />
         <attr name="finishStepLineColor" format="reference" />
         <attr name="baseStepLineColor" format="reference" />

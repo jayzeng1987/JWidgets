@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="undoStepDefColor">#FA977B</color>
+    <color name="currentStepDefColor">#F85424</color>
     <color name="finishStepDefColor">#F85424</color>
     <color name="finishStepLineDefColor">#F85424</color>
     <color name="baseStepLineDefColor">#FA977B</color>

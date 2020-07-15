@@ -5,4 +5,5 @@
     <dimen name="stepTitleDefTextSize">12sp</dimen>
     <dimen name="stepTitleDefTopSpace">5dp</dimen>
     <dimen name="stepLineDefStrokeWidth">2dp</dimen>
+    <dimen name="baseStepLineDefStrokeWidth">1dp</dimen>
 </resources>
