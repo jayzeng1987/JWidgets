@@ -84,19 +84,6 @@
             app:showArrowIcon="false"
             app:subTitle="当前版本：1.0.0"/>
 
-        <com.genvict.jsimplestep.JSimpleStepView
-            android:id="@+id/simpleStep"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:background="@color/white"
-            android:layout_marginTop="5dp"
-            app:isShowTitle="true"
-            app:stepCircleRadius="12dp"
-            app:stepNumTextSize="11sp"
-            app:stepTitleTextSize="11sp"
-            app:baseStepLineColor="@color/backgroundColorGrayLight"
-            app:finishStepColor="@color/colorAccent"
-            app:stepStatusGraphType="GRAPH"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
