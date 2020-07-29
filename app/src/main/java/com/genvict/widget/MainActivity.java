@@ -88,6 +88,7 @@ public class MainActivity extends Activity {
         stepList.add("步骤2");
         stepList.add("这是步骤3");
         stepList.add("步骤4");
+        stepList.add("步骤5");
         stepView.setStepContentList(stepList);
     }
 }

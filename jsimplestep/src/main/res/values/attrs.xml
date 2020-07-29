@@ -15,6 +15,10 @@
         <attr name="baseStepLineColor" format="reference" />
         <attr name="nextStepLineColor" format="reference" />
         <attr name="stepNumTextColor" format="reference" />
+        <attr name="stepStatusGraphType">
+            <enum name="NUMBER" value="1" />
+            <enum name="GRAPH" value="2" />
+        </attr>
 
     </declare-styleable>
 </resources>

@@ -95,7 +95,8 @@
             app:stepNumTextSize="11sp"
             app:stepTitleTextSize="11sp"
             app:baseStepLineColor="@color/backgroundColorGrayLight"
-            app:finishStepColor="@color/colorAccent"/>
+            app:finishStepColor="@color/colorAccent"
+            app:stepStatusGraphType="GRAPH"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

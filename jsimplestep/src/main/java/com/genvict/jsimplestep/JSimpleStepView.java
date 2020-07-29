@@ -3,8 +3,10 @@ package com.genvict.jsimplestep;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -69,7 +71,10 @@ public class JSimpleStepView extends View {
      * 下一步步骤连接线画笔
      */
     private Paint mNextStepLinePaint;
-
+    /**
+     * 步骤状态图形画笔
+     */
+    private Paint mStepStatusGraphPaint;
     /**
      * 圆的半径
      */
@@ -126,6 +131,8 @@ public class JSimpleStepView extends View {
      * 步骤序号文字颜色
      */
     private int mStepNumTextColorId;
+
+    private int mStepStatusGraphType;
 
     public JSimpleStepView(Context context) {
         this(context, null, 0);
@@ -329,6 +336,15 @@ public class JSimpleStepView extends View {
         return this;
     }
 
+    public JSimpleStepView setStepStatusGraphType(int type) {
+        if (type < 1 || type > 2) {
+            this.mStepStatusGraphType = 1;
+        } else {
+            this.mStepStatusGraphType = type;
+        }
+        return this;
+    }
+
     private void initAttrs(Context context, AttributeSet attrs) {
         this.mContext = context;
         TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.JSimpleStepView);
@@ -348,6 +364,8 @@ public class JSimpleStepView extends View {
             setBaseStepLineColorId(ta.getColor(R.styleable.JSimpleStepView_baseStepLineColor, getResources().getColor(R.color.baseStepLineDefColor)));
             setNextStepLineColorId(ta.getColor(R.styleable.JSimpleStepView_nextStepLineColor, getResources().getColor(R.color.nextStepLineDefColor)));
             setStepNumTextColorId(ta.getColor(R.styleable.JSimpleStepView_stepNumTextColor, getResources().getColor(R.color.stepNumTextDefColor)));
+
+            setStepStatusGraphType(ta.getInt(R.styleable.JSimpleStepView_stepStatusGraphType, 1));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -398,6 +416,14 @@ public class JSimpleStepView extends View {
         mNextStepLinePaint.setAntiAlias(true);
         mNextStepLinePaint.setStrokeWidth(mStepLineStrokeWidth);
         mNextStepLinePaint.setColor(mNextStepLineColorId);
+
+        //步骤图形状态画笔
+        mStepStatusGraphPaint = new Paint();
+        mStepStatusGraphPaint.setStyle(Paint.Style.STROKE);
+        mStepStatusGraphPaint.setAntiAlias(true);
+        mStepStatusGraphPaint.setStrokeWidth(mStepLineStrokeWidth);
+        mStepStatusGraphPaint.setColor(Color.WHITE);
+        mStepStatusGraphPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
     @Override
@@ -467,6 +493,7 @@ public class JSimpleStepView extends View {
         int titleYOffset = mStepCircleRadius + measureTextHeight(mStepTitlePaint) + mStepTitleTopSpace;
         //循环画图形、标题、连接线
         int circleRadius = mStepCircleRadius;
+        boolean isFinishStep = false;
         for (int i = 0; i < mStepItemSize; i++) {
             //计算每个圆形的中心点
             x = (stepItemWidth/2) * (2 * i + 1);
@@ -502,21 +529,33 @@ public class JSimpleStepView extends View {
                 mStepCirclePaint.setColor(mCurrentStepColorId);
                 mStepTitlePaint.setColor(mCurrentStepColorId);
                 circleRadius = (int) (circleRadius * 1.2);
+                isFinishStep = true;
+
             } else if (i < (mCurrentStepNum - 1)) {
                 //已完成步骤
                 mStepCirclePaint.setColor(mFinishStepColorId);
                 mStepTitlePaint.setColor(mFinishStepColorId);
                 circleRadius = mStepCircleRadius;
+                isFinishStep = true;
             } else {
                 //未完成的步骤
                 mStepCirclePaint.setColor(mUndoStepColorId);
                 mStepTitlePaint.setColor(mUndoStepColorId);
                 circleRadius = mStepCircleRadius;
+                isFinishStep = false;
             }
             //画圆
             canvas.drawCircle(x, y, circleRadius, mStepCirclePaint);
-            //画步骤序号
-            canvas.drawText(String.valueOf(i + 1), x, y + getVerticalCenterOffset(mStepNumPaint), mStepNumPaint);
+
+            //画圆上的文字或图形
+            if (mStepStatusGraphType == 1) {
+                //画步骤序号
+                canvas.drawText(String.valueOf(i + 1), x, y + getVerticalCenterOffset(mStepNumPaint), mStepNumPaint);
+            } else if (mStepStatusGraphType == 2) {
+                //画图形
+                drawFinishStepGraph(canvas, x, y, circleRadius, isFinishStep);
+            }
+
             //画步骤标题
             if (mIsShowTitle) {
                 canvas.drawText(mStepContentList.get(i), x, y + titleYOffset, mStepTitlePaint);
@@ -579,4 +618,36 @@ public class JSimpleStepView extends View {
         return maxWidth;
     }
 
+    /**
+     * 根据圆心位置和半径绘画打勾图形
+     * @param canvas 画布
+     * @param cicleX 圆心x坐标
+     * @param cicleY 圆心y坐标
+     * @param cicleRadius 圆半径
+     * @param isFinish 步骤是否是完成状态
+     */
+    private void drawFinishStepGraph(Canvas canvas, int cicleX, int cicleY, int cicleRadius, boolean isFinish) {
+        if (isFinish) {
+            int p1x = (int) (cicleX - 0.8 * cicleRadius / 2), p1y = cicleY;
+            int p2x = cicleX, p2y = (int) (cicleY + 0.7 * cicleRadius / 2);
+            int p3x = cicleX + cicleRadius / 2, p3y = cicleY - cicleRadius / 2;
+
+            Path path = new Path();
+            path.moveTo(p1x, p1y);
+            path.lineTo(p2x, p2y);
+            path.lineTo(p3x, p3y);
+            canvas.drawPath(path, mStepStatusGraphPaint);
+        } else {
+            int p1x = cicleX, p1y = cicleY - cicleRadius * 1/2;
+            int p2x = cicleX, p2y = cicleY + cicleRadius * 1/6;
+            int p3x = cicleX, p3y = cicleY + cicleRadius * 1/2;
+
+            Path path=new Path();
+            path.moveTo(p1x, p1y);
+            path.lineTo(p2x, p2y);
+
+            canvas.drawPath(path, mStepStatusGraphPaint);
+            canvas.drawPoint(p3x, p3y, mStepStatusGraphPaint);
+        }
+    }
 }
