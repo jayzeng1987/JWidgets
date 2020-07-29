@@ -416,6 +416,7 @@ public class JSimpleStepView extends View {
         mNextStepLinePaint.setAntiAlias(true);
         mNextStepLinePaint.setStrokeWidth(mStepLineStrokeWidth);
         mNextStepLinePaint.setColor(mNextStepLineColorId);
+        mNextStepLinePaint.setStrokeCap(Paint.Cap.ROUND);
 
         //步骤图形状态画笔
         mStepStatusGraphPaint = new Paint();

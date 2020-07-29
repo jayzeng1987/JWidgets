@@ -1,17 +1,14 @@
 package com.genvict.widget;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.genvict.jsimplestep.JSimpleStepView;
 import com.genvict.widgets.jmb.JMenuButton;
 import com.genvict.widgets.jmi.JMenuItem;
 import com.genvict.widgets.jtb.JTopBar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 测试Demo
@@ -24,9 +21,6 @@ public class MainActivity extends Activity {
 
     private JTopBar topBar;
 
-    private JSimpleStepView stepView;
-    private List<String> stepList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,17 +30,13 @@ public class MainActivity extends Activity {
         testMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "You click the menu button!", Toast.LENGTH_SHORT).show();
-                int step = stepView.getCurrentStepNum() + 1;
-                if (step > stepList.size()) {
-                    step = 1;
-                }
-                stepView.setCurrentStepNum(step);
+                Intent intent = new Intent(MainActivity.this, SimpleStepActivity.class);
+                startActivity(intent);
             }
         });
         testMenuButton.setTitle("这是一个菜单按钮")
                 .setTitleMarginTop(30)
-                .setIconClickEffect(false);
+                .setIconClickEffect(true);
 
         versoin = findViewById(R.id.versoin);
         versoin.setOnClickListener(new View.OnClickListener() {
@@ -79,16 +69,5 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this, "You click right icon button!", Toast.LENGTH_SHORT).show();
             }
         });
-
-        stepView = findViewById(R.id.simpleStep);
-        stepView.setStepItemSize(5);
-        //步骤内容列表
-        stepList = new ArrayList<>(6);
-        stepList.add("步骤1");
-        stepList.add("步骤2");
-        stepList.add("这是步骤3");
-        stepList.add("步骤4");
-        stepList.add("步骤5");
-        stepView.setStepContentList(stepList);
     }
 }
