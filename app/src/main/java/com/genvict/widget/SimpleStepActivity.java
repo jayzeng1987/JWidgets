@@ -32,7 +32,7 @@ public class SimpleStepActivity extends AppCompatActivity {
         stepContentList.add("步骤5");
 
         jSimpleStepView1 = findViewById(R.id.JSimpleStepView1);
-        jSimpleStepView1.setStepContentList(stepContentList).setCurrentStepNum(2);
+        jSimpleStepView1.setStepContentList(stepContentList);
 
         jSimpleStepView2 = findViewById(R.id.JSimpleStepView2);
         jSimpleStepView2.setStepContentList(stepContentList)
@@ -47,6 +47,7 @@ public class SimpleStepActivity extends AppCompatActivity {
                     step = 1;
                 }
                 jSimpleStepView2.setCurrentStepNum(step);
+                jSimpleStepView1.setCurrentStepNum(step);
             }
         });
     }

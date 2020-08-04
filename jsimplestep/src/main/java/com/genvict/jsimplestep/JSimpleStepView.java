@@ -1,5 +1,6 @@
 package com.genvict.jsimplestep;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -7,7 +8,9 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -22,6 +25,74 @@ import androidx.annotation.Nullable;
 public class JSimpleStepView extends View {
     private Context mContext;
 
+    /**
+     * 步骤状态枚举
+     */
+    private enum StepStatus {
+        /**
+         * 已完成
+         */
+        FINISH,
+        /**
+         * 当前正在执行
+         */
+        DOING,
+        /**
+         * 未完成
+         */
+        UNDO
+    }
+
+    /**
+     * 步骤描述信息
+     */
+    private class StepDescription {
+        /**
+         * 图形中心点x坐标
+         */
+        public int centerX;
+        /**
+         * 图形中心点y坐标
+         */
+        public int centerY;
+        /**
+         * 圆形背景半径
+         */
+        public int radius;
+        /**
+         * 状态图形路径
+         */
+        public Path statusGraphPath = new Path();
+        /**
+         * 步骤状态
+         */
+        public StepStatus status;
+        /**
+         * 连接线起点x坐标
+         */
+        public int lineStartX;
+        /**
+         * 连接线起点y坐标
+         */
+        public int lineStartY;
+        /**
+         * 连接线终点x坐标
+         */
+        public int lineEndX;
+        /**
+         * 连接线终点y坐标
+         */
+        public int lineEndY;
+    }
+
+    /**
+     * 步骤描述信息列表
+     */
+    private List<StepDescription> mStepDescriptionList = new ArrayList<>();
+    /**
+     * 标题显示Y轴偏移量
+     */
+    private int mTitleYOffset;
     /**
      * 控件视图宽度
      */
@@ -131,8 +202,26 @@ public class JSimpleStepView extends View {
      * 步骤序号文字颜色
      */
     private int mStepNumTextColorId;
-
+    /**
+     * 步骤状态图形类型 1：序号 2：图形
+     */
     private int mStepStatusGraphType;
+    /**
+     * 步骤状态图形动画
+     */
+    private ValueAnimator mStatusGraphAnimator;
+    /**
+     * 测量路径
+     */
+    private PathMeasure mStatusGraphMeasure = new PathMeasure();
+    /**
+     * 当前正在绘制的路径
+     */
+    private Path mStatusGraphSegPath = new Path();
+    /**
+     * 动画进度
+     */
+    private float mProgress;
 
     public JSimpleStepView(Context context) {
         this(context, null, 0);
@@ -146,6 +235,10 @@ public class JSimpleStepView extends View {
         super(context, attrs, defStyleAttr);
         initAttrs(context, attrs);
         initPaint();
+        //初始化动画
+        initAnimator();
+        //关闭硬件加速
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
     /**
@@ -194,6 +287,11 @@ public class JSimpleStepView extends View {
      */
     public JSimpleStepView setCurrentStepNum(int stepNum) {
         this.mCurrentStepNum = stepNum;
+        int size = mStepDescriptionList.size();
+        for (int i = 0; i < size; i++) {
+            StepDescription sd = mStepDescriptionList.get(i);
+            initGraphPath(sd, i, mCurrentStepNum);
+        }
         invalidate();
         return this;
     }
@@ -336,6 +434,11 @@ public class JSimpleStepView extends View {
         return this;
     }
 
+    /**
+     * 设置步骤状态图形类型
+     * @param type 步骤状态图形类型 0：序号 1：图形
+     * @return JSimpleStepView
+     */
     public JSimpleStepView setStepStatusGraphType(int type) {
         if (type < 1 || type > 2) {
             this.mStepStatusGraphType = 1;
@@ -345,6 +448,11 @@ public class JSimpleStepView extends View {
         return this;
     }
 
+    /**
+     * 初始化属性参数
+     * @param context
+     * @param attrs
+     */
     private void initAttrs(Context context, AttributeSet attrs) {
         this.mContext = context;
         TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.JSimpleStepView);
@@ -375,6 +483,9 @@ public class JSimpleStepView extends View {
         }
     }
 
+    /**
+     * 初始化画笔
+     */
     private void initPaint() {
         //圆形背景
         mStepCirclePaint = new Paint();
@@ -479,90 +590,85 @@ public class JSimpleStepView extends View {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        //标题Y坐标相对于圆形Y坐标的偏移量
+        mTitleYOffset = mStepCircleRadius + measureTextHeight(mStepTitlePaint) + mStepTitleTopSpace;
+
+        //每个步骤项的宽度
+        int stepItemWidth = mViewWidth / mStepItemSize;
+        //保存每个步骤圆形图形的x，y中心点、半径和步骤状态
+        for (int i = 0; i < mStepItemSize; i++) {
+            StepDescription sd = new StepDescription();
+            sd.centerX = (stepItemWidth/2) * (2 * i + 1);
+            sd.centerY = (mViewHeight - mStepTitleHeight) / 2;
+            //计算连接线起始坐标
+            sd.lineStartX = sd.centerX + mStepCircleRadius;
+            sd.lineStartY = sd.centerY;
+            //计算连接线终点坐标
+            sd.lineEndX = (stepItemWidth - 2 * mStepCircleRadius) + sd.lineStartX;
+            sd.lineEndY = sd.lineStartY;
+
+            initGraphPath(sd, i, mCurrentStepNum);
+
+            mStepDescriptionList.add(sd);
+        }
+
+
+    }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mStatusGraphAnimator.cancel();
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
+        Log.i("genvict", "onDraw");
         super.onDraw(canvas);
         if (mStepItemSize == 0) {
             return;
         }
-        //x,y：圆形中心坐标
-        //lineStartX, lineStartY：连接线起点坐标
-        //lineEndX, lineEndY：连接线终点坐标
-        int x, y, lineStartX, lineStartY, lineEndX, lineEndY;
-        //每个步骤项的宽度
-        int stepItemWidth = mViewWidth / mStepItemSize;
-        //标题Y坐标相对于圆形Y坐标的偏移量
-        int titleYOffset = mStepCircleRadius + measureTextHeight(mStepTitlePaint) + mStepTitleTopSpace;
-        //循环画图形、标题、连接线
         int circleRadius = mStepCircleRadius;
-        boolean isFinishStep = false;
-        for (int i = 0; i < mStepItemSize; i++) {
-            //计算每个圆形的中心点
-            x = (stepItemWidth/2) * (2 * i + 1);
-            y = (mViewHeight - mStepTitleHeight) / 2;
+        for (int i = 0; i < mStepDescriptionList.size(); i++) {
+            StepDescription sd = mStepDescriptionList.get(i);
+            switch (sd.status) {
+                case FINISH:
+                    mStepCirclePaint.setColor(mFinishStepColorId);
+                    circleRadius = mStepCircleRadius;
+                    break;
+                case DOING:
+                    mStepCirclePaint.setColor(mCurrentStepColorId);
+                    circleRadius = (int) (mStepCircleRadius * 1.2);
+                    break;
+                case UNDO:
+                    mStepCirclePaint.setColor(mUndoStepColorId);
+                    circleRadius = mStepCircleRadius;
+                    break;
+            }
 
             //画连接线
-            //计算连接线起始坐标
-            lineStartX = x + mStepCircleRadius;
-            lineStartY = y;
-            //计算连接线终点坐标
-            lineEndX = (stepItemWidth - 2 * mStepCircleRadius) + lineStartX;
-            lineEndY = y;
-
-            if (i < mStepItemSize - 1) {
-                //禁止硬件加速，硬件加速导致无法显示虚线
-                setLayerType(LAYER_TYPE_SOFTWARE, null);
-                //未完成步骤连接线（点线）
-                canvas.drawLine(lineStartX, lineStartY, lineEndX, lineEndY, mBaseStepLinePaint);
-
-                if (i < mCurrentStepNum - 1) {
-                    //已完成步骤连接线
-                    canvas.drawLine(lineStartX, lineStartY, lineEndX, lineEndY, mFinishStepLinePaint);
-                } else if (i == mCurrentStepNum - 1) {
-                    //下一步骤连接线，画一半实线
-                    int targetEndX = (lineEndX - lineStartX) /2 + lineStartX;
-                    canvas.drawLine(lineStartX, lineStartY, targetEndX, lineEndY, mNextStepLinePaint);
-                }
-            }
-
-            //画圆形背景
-            if (i == (mCurrentStepNum - 1)) {
-                //当前步骤
-                mStepCirclePaint.setColor(mCurrentStepColorId);
-                mStepTitlePaint.setColor(mCurrentStepColorId);
-                circleRadius = (int) (circleRadius * 1.2);
-                isFinishStep = true;
-
-            } else if (i < (mCurrentStepNum - 1)) {
-                //已完成步骤
-                mStepCirclePaint.setColor(mFinishStepColorId);
-                mStepTitlePaint.setColor(mFinishStepColorId);
-                circleRadius = mStepCircleRadius;
-                isFinishStep = true;
-            } else {
-                //未完成的步骤
-                mStepCirclePaint.setColor(mUndoStepColorId);
-                mStepTitlePaint.setColor(mUndoStepColorId);
-                circleRadius = mStepCircleRadius;
-                isFinishStep = false;
-            }
+            drawLinkLine(canvas, sd, i, mCurrentStepNum);
             //画圆
-            canvas.drawCircle(x, y, circleRadius, mStepCirclePaint);
-
-            //画圆上的文字或图形
+            Log.i("genvict", "drawCircle");
+            canvas.drawCircle(sd.centerX, sd.centerY, circleRadius, mStepCirclePaint);
             if (mStepStatusGraphType == 1) {
                 //画步骤序号
-                canvas.drawText(String.valueOf(i + 1), x, y + getVerticalCenterOffset(mStepNumPaint), mStepNumPaint);
+                canvas.drawText(String.valueOf(i + 1), sd.centerX, sd.centerY + getVerticalCenterOffset(mStepNumPaint), mStepNumPaint);
             } else if (mStepStatusGraphType == 2) {
                 //画图形
-                drawFinishStepGraph(canvas, x, y, circleRadius, isFinishStep);
+                drawStepGraph(canvas, sd);
             }
 
             //画步骤标题
             if (mIsShowTitle) {
-                canvas.drawText(mStepContentList.get(i), x, y + titleYOffset, mStepTitlePaint);
+                canvas.drawText(mStepContentList.get(i), sd.centerX, sd.centerY + mTitleYOffset, mStepTitlePaint);
             }
         }
     }
+
+
 
     /**
      * 获取文字垂直居中便宜量
@@ -619,36 +725,105 @@ public class JSimpleStepView extends View {
         return maxWidth;
     }
 
+    private void initAnimator() {
+        mStatusGraphAnimator = ValueAnimator.ofFloat(0, 1.0F);
+        mStatusGraphAnimator.setDuration(900);
+        mStatusGraphAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mProgress = (float) animation.getAnimatedValue();
+                Log.i("genvict", "onAnimationUpdate: mProgress" + mProgress);
+                invalidate();
+            }
+        });
+    }
+
     /**
-     * 根据圆心位置和半径绘画打勾图形
-     * @param canvas 画布
-     * @param cicleX 圆心x坐标
-     * @param cicleY 圆心y坐标
-     * @param cicleRadius 圆半径
-     * @param isFinish 步骤是否是完成状态
+     * 初始化图形路径
+     * @param sd 步骤描述
+     * @param index 步骤索引
+     * @param currentStepNum 当前步骤
      */
-    private void drawFinishStepGraph(Canvas canvas, int cicleX, int cicleY, int cicleRadius, boolean isFinish) {
-        if (isFinish) {
-            int p1x = (int) (cicleX - 0.8 * cicleRadius / 2), p1y = cicleY;
-            int p2x = cicleX, p2y = (int) (cicleY + 0.7 * cicleRadius / 2);
-            int p3x = cicleX + cicleRadius / 2, p3y = cicleY - cicleRadius / 2;
+    private void initGraphPath(StepDescription sd, int index, int currentStepNum) {
+        int tmp = index + 1;
+        if (tmp < currentStepNum) {
+            sd.radius = mStepCircleRadius;
+            sd.status = StepStatus.FINISH;
+            int p1x = (int) (sd.centerX - 0.8 * sd.radius / 2), p1y = sd.centerY;
+            int p2x = sd.centerX, p2y = (int) (sd.centerY + 0.7 * sd.radius / 2);
+            int p3x = sd.centerX + sd.radius / 2, p3y = sd.centerY - sd.radius / 2;
 
             Path path = new Path();
             path.moveTo(p1x, p1y);
             path.lineTo(p2x, p2y);
             path.lineTo(p3x, p3y);
-            canvas.drawPath(path, mStepStatusGraphPaint);
+            sd.statusGraphPath.set(path);
+
+        } else if (tmp == mCurrentStepNum) {
+            sd.radius = (int) (mStepCircleRadius * 1.2);
+            sd.status = StepStatus.DOING;
+            int p1x = (int) (sd.centerX - 0.8 * sd.radius / 2), p1y = sd.centerY;
+            int p2x = sd.centerX, p2y = (int) (sd.centerY + 0.7 * sd.radius / 2);
+            int p3x = sd.centerX + sd.radius / 2, p3y = sd.centerY - sd.radius / 2;
+
+            Path path = new Path();
+            path.moveTo(p1x, p1y);
+            path.lineTo(p2x, p2y);
+            path.lineTo(p3x, p3y);
+            sd.statusGraphPath.set(path);
+            mStatusGraphMeasure.setPath(sd.statusGraphPath, false);
+            mStatusGraphAnimator.start();
         } else {
-            int p1x = cicleX, p1y = cicleY - cicleRadius * 1/2;
-            int p2x = cicleX, p2y = cicleY + cicleRadius * 1/6;
-            int p3x = cicleX, p3y = cicleY + cicleRadius * 1/2;
+            sd.radius = mStepCircleRadius;
+            sd.status = StepStatus.UNDO;
+            int p1x = sd.centerX, p1y = sd.centerY - sd.radius * 1/2;
+            int p2x = sd.centerX, p2y = sd.centerY + sd.radius * 1/6;
+            int p3x = sd.centerX, p3y = sd.centerY + sd.radius * 1/2;
 
             Path path=new Path();
             path.moveTo(p1x, p1y);
             path.lineTo(p2x, p2y);
+            path.moveTo(p3x, p3y);
+            path.lineTo(p3x, p3y + 1);
+            sd.statusGraphPath.set(path);
+        }
+    }
 
-            canvas.drawPath(path, mStepStatusGraphPaint);
-            canvas.drawPoint(p3x, p3y, mStepStatusGraphPaint);
+    /**
+     * 画步骤图形
+     * @param canvas 画布
+     * @param sd 步骤描述
+     */
+    private void drawStepGraph(Canvas canvas, StepDescription sd) {
+        if (sd.status == StepStatus.DOING) {
+            mStatusGraphSegPath.reset();
+            mStatusGraphMeasure.getSegment(0, mProgress * mStatusGraphMeasure.getLength(), mStatusGraphSegPath, true);
+            canvas.drawPath(mStatusGraphSegPath, mStepStatusGraphPaint);
+        } else {
+            canvas.drawPath(sd.statusGraphPath, mStepStatusGraphPaint);
+        }
+    }
+
+    /**
+     * 画连接线
+     * @param canvas 画布
+     * @param sd 步骤描述
+     * @param index 步骤索引
+     * @param currentStepNum 当前步骤
+     */
+    private void drawLinkLine(Canvas canvas, StepDescription sd, int index, int currentStepNum) {
+        if (index < mStepItemSize - 1) {
+            //未完成步骤连接线（点线）
+            canvas.drawLine(sd.lineStartX, sd.lineStartY, sd.lineEndX, sd.lineEndY, mBaseStepLinePaint);
+
+            if (index < currentStepNum - 1) {
+                //已完成步骤连接线
+                canvas.drawLine(sd.lineStartX, sd.lineStartY, sd.lineEndX, sd.lineEndY, mFinishStepLinePaint);
+            } else if (index == currentStepNum - 1) {
+                //下一步骤连接线，画一半实线
+                int targetEndX = (sd.lineEndX - sd.lineStartX) /2 + sd.lineStartX;
+                canvas.drawLine(sd.lineStartX, sd.lineStartY, targetEndX, sd.lineEndY, mNextStepLinePaint);
+            }
         }
     }
 }
