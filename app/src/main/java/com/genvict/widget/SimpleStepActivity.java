@@ -16,6 +16,7 @@ public class SimpleStepActivity extends AppCompatActivity {
     private JSimpleStepView jSimpleStepView2;
 
     private Button btnTestStepView;
+    private Button btnBack;
 
     private List<String> stepContentList;
 
@@ -48,6 +49,14 @@ public class SimpleStepActivity extends AppCompatActivity {
                 }
                 jSimpleStepView2.setCurrentStepNum(step);
                 jSimpleStepView1.setCurrentStepNum(step);
+            }
+        });
+
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
