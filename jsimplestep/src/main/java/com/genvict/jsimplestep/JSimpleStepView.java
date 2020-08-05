@@ -1,5 +1,6 @@
 package com.genvict.jsimplestep;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -64,6 +65,10 @@ public class JSimpleStepView extends View {
          */
         public Path statusGraphPath = new Path();
         /**
+         * 状态线图形路径
+         */
+        public Path statusLinePath = new Path();
+        /**
          * 步骤状态
          */
         public StepStatus status;
@@ -117,7 +122,6 @@ public class JSimpleStepView extends View {
      * 当前步骤序号
      */
     private int mCurrentStepNum = 1;
-
     /**
      * 圆形画笔
      */
@@ -211,17 +215,37 @@ public class JSimpleStepView extends View {
      */
     private ValueAnimator mStatusGraphAnimator;
     /**
+     * 状态线动画
+     */
+    private ValueAnimator mStatusLineAnimator;
+    /**
      * 测量路径
      */
     private PathMeasure mStatusGraphMeasure = new PathMeasure();
     /**
-     * 当前正在绘制的路径
+     * 测量路径
+     */
+    private PathMeasure mStatusLineMeasure = new PathMeasure();
+    /**
+     * 当前正在绘制的图形路径
      */
     private Path mStatusGraphSegPath = new Path();
     /**
-     * 动画进度
+     * 当前正在绘制的图形路径
      */
-    private float mProgress;
+    private Path mStatusLineSegPath = new Path();
+    /**
+     * 图形动画进度
+     */
+    private float mStatusGraphProgress;
+    /**
+     * 状态线动画进度
+     */
+    private float mStatusLineProgress;
+    /**
+     * 总进度值
+     */
+    private static float mTotalProgress = 1.0f;
 
     public JSimpleStepView(Context context) {
         this(context, null, 0);
@@ -524,6 +548,7 @@ public class JSimpleStepView extends View {
 
         //下一步骤连接线
         mNextStepLinePaint = new Paint();
+        mNextStepLinePaint.setStyle(Paint.Style.STROKE);
         mNextStepLinePaint.setAntiAlias(true);
         mNextStepLinePaint.setStrokeWidth(mStepLineStrokeWidth);
         mNextStepLinePaint.setColor(mNextStepLineColorId);
@@ -609,23 +634,20 @@ public class JSimpleStepView extends View {
             //计算连接线终点坐标
             sd.lineEndX = (stepItemWidth - 2 * mStepCircleRadius) + sd.lineStartX;
             sd.lineEndY = sd.lineStartY;
-
             initGraphPath(sd, i, mCurrentStepNum);
-
             mStepDescriptionList.add(sd);
         }
-
-
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mStatusGraphAnimator.cancel();
+        mStatusLineAnimator.cancel();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.i("genvict", "onDraw");
         super.onDraw(canvas);
         if (mStepItemSize == 0) {
             return;
@@ -651,7 +673,6 @@ public class JSimpleStepView extends View {
             //画连接线
             drawLinkLine(canvas, sd, i, mCurrentStepNum);
             //画圆
-            Log.i("genvict", "drawCircle");
             canvas.drawCircle(sd.centerX, sd.centerY, circleRadius, mStepCirclePaint);
             if (mStepStatusGraphType == 1) {
                 //画步骤序号
@@ -660,7 +681,6 @@ public class JSimpleStepView extends View {
                 //画图形
                 drawStepGraph(canvas, sd);
             }
-
             //画步骤标题
             if (mIsShowTitle) {
                 canvas.drawText(mStepContentList.get(i), sd.centerX, sd.centerY + mTitleYOffset, mStepTitlePaint);
@@ -726,13 +746,48 @@ public class JSimpleStepView extends View {
     }
 
     private void initAnimator() {
-        mStatusGraphAnimator = ValueAnimator.ofFloat(0, 1.0F);
+        mStatusGraphAnimator = ValueAnimator.ofFloat(0, mTotalProgress);
         mStatusGraphAnimator.setDuration(900);
         mStatusGraphAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mProgress = (float) animation.getAnimatedValue();
-                Log.i("genvict", "onAnimationUpdate: mProgress" + mProgress);
+                mStatusGraphProgress = (float) animation.getAnimatedValue();
+//                mStatusLineProgress = 0;
+                Log.i("genvict", "onAnimationUpdate: mStatusGraphProgress" + mStatusGraphProgress);
+                invalidate();
+            }
+        });
+        mStatusGraphAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (mStatusLineAnimator.isStarted()) {
+                    mStatusLineAnimator.cancel();
+                }
+                mStatusLineAnimator.start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mStatusLineAnimator.cancel();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        mStatusLineAnimator = ValueAnimator.ofFloat(0, mTotalProgress);
+        mStatusLineAnimator.setDuration(900);
+        mStatusLineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mStatusLineProgress = (float) animation.getAnimatedValue();
                 invalidate();
             }
         });
@@ -772,7 +827,26 @@ public class JSimpleStepView extends View {
             path.lineTo(p3x, p3y);
             sd.statusGraphPath.set(path);
             mStatusGraphMeasure.setPath(sd.statusGraphPath, false);
-            mStatusGraphAnimator.start();
+
+            Path linePath = new Path();
+            linePath.moveTo(sd.lineStartX, sd.lineStartY);
+            int targetEndX = (sd.lineEndX - sd.lineStartX) /2 + sd.lineStartX;
+            linePath.lineTo(targetEndX, sd.lineEndY);
+            sd.statusLinePath.set(linePath);
+            mStatusLineMeasure.setPath(linePath, false);
+
+            if (mStepStatusGraphType == 1) {
+                if (mStatusLineAnimator.isStarted()) {
+                    mStatusLineAnimator.cancel();
+                }
+                mStatusLineAnimator.start();
+            } else {
+                if (mStatusGraphAnimator.isStarted()) {
+                    mStatusGraphAnimator.cancel();
+                }
+                mStatusGraphAnimator.start();
+            }
+
         } else {
             sd.radius = mStepCircleRadius;
             sd.status = StepStatus.UNDO;
@@ -797,7 +871,7 @@ public class JSimpleStepView extends View {
     private void drawStepGraph(Canvas canvas, StepDescription sd) {
         if (sd.status == StepStatus.DOING) {
             mStatusGraphSegPath.reset();
-            mStatusGraphMeasure.getSegment(0, mProgress * mStatusGraphMeasure.getLength(), mStatusGraphSegPath, true);
+            mStatusGraphMeasure.getSegment(0, mStatusGraphProgress * mStatusGraphMeasure.getLength(), mStatusGraphSegPath, true);
             canvas.drawPath(mStatusGraphSegPath, mStepStatusGraphPaint);
         } else {
             canvas.drawPath(sd.statusGraphPath, mStepStatusGraphPaint);
@@ -821,8 +895,15 @@ public class JSimpleStepView extends View {
                 canvas.drawLine(sd.lineStartX, sd.lineStartY, sd.lineEndX, sd.lineEndY, mFinishStepLinePaint);
             } else if (index == currentStepNum - 1) {
                 //下一步骤连接线，画一半实线
-                int targetEndX = (sd.lineEndX - sd.lineStartX) /2 + sd.lineStartX;
-                canvas.drawLine(sd.lineStartX, sd.lineStartY, targetEndX, sd.lineEndY, mNextStepLinePaint);
+//                int targetEndX = (sd.lineEndX - sd.lineStartX) /2 + sd.lineStartX;
+//                canvas.drawLine(sd.lineStartX, sd.lineStartY, targetEndX, sd.lineEndY, mNextStepLinePaint);
+                if (mStatusGraphProgress == mTotalProgress || mStepStatusGraphType == 1) {
+                    //当mStepStatusGraphType为显示序号类型时，无须等待mStatusGraphProgress到1，直接处理mStatusLineProgress
+                    //当mStepStatusGraphType为显示图形时，mStatusGraphProgress完成后才会执行mStatusLineProgress的处理
+                    mStatusLineSegPath.reset();
+                    mStatusLineMeasure.getSegment(0, mStatusLineProgress * mStatusLineMeasure.getLength(), mStatusLineSegPath, true);
+                    canvas.drawPath(mStatusLineSegPath, mNextStepLinePaint);
+                }
             }
         }
     }
