@@ -36,4 +36,5 @@ dependencies {
     implementation project(path: ':jmenuitem')
     implementation project(path: ':jtopbar')
     implementation project(path: ':jsimplestep')
+    implementation project(path: ':jwaveloading')
 }

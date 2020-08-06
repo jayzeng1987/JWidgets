@@ -52,6 +52,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click the menu item!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, WaveActivity.class);
+                startActivity(intent);
             }
         });
 
