@@ -19,7 +19,7 @@ public class JSinWaveView extends View {
     private Paint mProgressPaint;
     private Paint mWavePaint;
     private Path mWavePath;
-
+    private Path mClipPath;
 
     private int mWidth;
     private int mHeight;
@@ -28,9 +28,13 @@ public class JSinWaveView extends View {
     private int mCircleY;
     private int mCircleRadius;
 
+    private int mWaveWidth;
     private int mWaveHeight;
+    private int mContainerHeight;
     private int mAmplitude = 20;
     private float mTheta = 0f;
+    private int mProgress = 0;
+    private int mCurWaveHeight = 0;
 
     public JSinWaveView(Context context) {
         this(context, null);
@@ -44,6 +48,14 @@ public class JSinWaveView extends View {
         super(context, attrs, defStyleAttr);
 
         init(context, attrs);
+    }
+
+    public void setProgress(int progress) {
+        this.mProgress = progress;
+        mCurWaveHeight = mProgress * mContainerHeight / 100;
+        if (mProgress == 0) {
+            mWaveHeight = 0;
+        }
     }
 
     @Override
@@ -66,6 +78,9 @@ public class JSinWaveView extends View {
         mCircleX = mWidth / 2;
         mCircleY = mHeight / 4;
         mCircleRadius = mWidth / 3;
+//        mWaveHeight = 2 * mCircleRadius;
+        mContainerHeight = 2 * mCircleRadius;
+        mWaveWidth = 2 * mCircleRadius;
     }
 
     @Override
@@ -75,46 +90,46 @@ public class JSinWaveView extends View {
         //画圆
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
         canvas.drawCircle(mCircleX, mCircleY, mCircleRadius + 20, mOutCirclePaint);
+        mCirclePaint.setColor(Color.GRAY);
         canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mCirclePaint);
 
-        int startY = mCircleY - mCircleRadius;
+        int startY = mCircleY + mCircleRadius;
         mWavePath.reset();
-        mWavePath.moveTo(0, startY);
+        mWavePath.moveTo(mCircleX - mCircleRadius, startY);
         int index = 0;
         float endY = 0;
-        while (index <= mWidth) {
-            endY = (float) (Math.sin((float) index / (float) mWidth * 5f * Math.PI + mTheta)
-                    * (float) mAmplitude + mWaveHeight);
-            mWavePath.lineTo(index, endY + startY);
+        while (index <= mWaveWidth) {
+            endY = (float) (Math.sin((float) index / (float) mWaveWidth * 4f * Math.PI + mTheta) * (float) mAmplitude + mWaveHeight);
+            mWavePath.lineTo(mCircleX - mCircleRadius + index,  startY - endY);
             index++;
         }
 
-        mWavePath.lineTo(index - 1, startY);
+        mWavePath.lineTo(mCircleX - mCircleRadius + index - 1, startY);
         mWavePath.close();
-//        canvas.save();
-        Path pc = new Path();
-        pc.addCircle(mCircleX, mCircleY, mCircleRadius, Path.Direction.CCW);
-        pc.close();
+        canvas.save();
+        mClipPath.reset();
+        mClipPath.addCircle(mCircleX, mCircleY, mCircleRadius, Path.Direction.CCW);
+        mClipPath.close();
         //切割画布
-        canvas.clipPath(pc, Region.Op.INTERSECT);
+        canvas.clipPath(mClipPath, Region.Op.INTERSECT);
+        if (mProgress < 100) {
+            canvas.drawPath(mWavePath, mWavePaint);
+        } else {
+            mCirclePaint.setColor(Color.argb(200, 2, 169, 244));
+            canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mCirclePaint);
+        }
+        canvas.restore();
 
-        canvas.drawPath(mWavePath, mWavePaint);
-//        canvas.restore();
-
-        mTheta += 0.3;
+        mTheta += 0.2;
         if (mTheta >= 2f * Math.PI) {
             mTheta -= (2f * Math.PI);
         }
 
-        if (mWaveHeight < 2 * mCircleRadius) {
+        if (mWaveHeight < mCurWaveHeight) {
             mWaveHeight += 2;
-
-            canvas.drawText(mWaveHeight + "", mCircleX, mCircleY, mProgressPaint);
-        } else {
-            mWaveHeight = 0;
         }
+        canvas.drawText(mProgress + "%", mCircleX, mCircleY, mProgressPaint);
         postInvalidateDelayed(50);
-
 
     }
 
@@ -140,6 +155,7 @@ public class JSinWaveView extends View {
         mProgressPaint.setColor(Color.WHITE);
 
         mWavePath = new Path();
+        mClipPath = new Path();
     }
 
 
