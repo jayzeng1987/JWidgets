@@ -13,6 +13,7 @@ import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -757,6 +758,7 @@ public class JSimpleStepView extends View {
                 invalidate();
             }
         });
+        mStatusGraphAnimator.setInterpolator(new DecelerateInterpolator());
         mStatusGraphAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {

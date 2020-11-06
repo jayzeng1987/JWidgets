@@ -53,6 +53,7 @@ public class JSinWaveView extends View {
     public void setProgress(int progress) {
         this.mProgress = progress;
         mCurWaveHeight = mProgress * mContainerHeight / 100;
+        mWaveHeight = mCurWaveHeight;
         if (mProgress == 0) {
             mWaveHeight = 0;
         }
@@ -86,51 +87,52 @@ public class JSinWaveView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         //画圆
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
         canvas.drawCircle(mCircleX, mCircleY, mCircleRadius + 20, mOutCirclePaint);
         mCirclePaint.setColor(Color.GRAY);
         canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mCirclePaint);
 
-        int startY = mCircleY + mCircleRadius;
-        mWavePath.reset();
-        mWavePath.moveTo(mCircleX - mCircleRadius, startY);
-        int index = 0;
-        float endY = 0;
-        while (index <= mWaveWidth) {
-            endY = (float) (Math.sin((float) index / (float) mWaveWidth * 4f * Math.PI + mTheta) * (float) mAmplitude + mWaveHeight);
-            mWavePath.lineTo(mCircleX - mCircleRadius + index,  startY - endY);
-            index++;
-        }
+        if (mProgress > 0) {
+            int startY = mCircleY + mCircleRadius;
+            mWavePath.reset();
+            mWavePath.moveTo(mCircleX - mCircleRadius, startY);
+            int index = 0;
+            float endY = 0;
+            while (index <= mWaveWidth) {
+                endY = (float) (Math.sin((float) index / (float) mWaveWidth * 2f * Math.PI + mTheta) * (float) mAmplitude + mWaveHeight);
+                mWavePath.lineTo(mCircleX - mCircleRadius + index, startY - endY);
+                index++;
+            }
 
-        mWavePath.lineTo(mCircleX - mCircleRadius + index - 1, startY);
-        mWavePath.close();
-        canvas.save();
-        mClipPath.reset();
-        mClipPath.addCircle(mCircleX, mCircleY, mCircleRadius, Path.Direction.CCW);
-        mClipPath.close();
-        //切割画布
-        canvas.clipPath(mClipPath, Region.Op.INTERSECT);
-        if (mProgress < 100) {
+            mWavePath.lineTo(mCircleX - mCircleRadius + index - 1, startY);
+            mWavePath.close();
+//            canvas.save();
+            mClipPath.reset();
+            mClipPath.addCircle(mCircleX, mCircleY, mCircleRadius, Path.Direction.CCW);
+            mClipPath.close();
+            //切割画布
+            canvas.clipPath(mClipPath, Region.Op.INTERSECT);
             canvas.drawPath(mWavePath, mWavePaint);
-        } else {
-            mCirclePaint.setColor(Color.argb(200, 2, 169, 244));
-            canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mCirclePaint);
-        }
-        canvas.restore();
+            if (mProgress < 100) {
+                canvas.drawPath(mWavePath, mWavePaint);
+            } else {
+                mCirclePaint.setColor(Color.argb(200, 2, 169, 244));
+                canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mCirclePaint);
+            }
+//            canvas.restore();
 
-        mTheta += 0.2;
-        if (mTheta >= 2f * Math.PI) {
-            mTheta -= (2f * Math.PI);
-        }
+            mTheta += 0.1;
+            if (mTheta >= 2f * Math.PI) {
+                mTheta -= (2f * Math.PI);
+            }
 
-        if (mWaveHeight < mCurWaveHeight) {
-            mWaveHeight += 2;
+            if (mWaveHeight < mCurWaveHeight) {
+                mWaveHeight += 1;
+            }
+            canvas.drawText(mProgress + "%", mCircleX, mCircleY, mProgressPaint);
         }
-        canvas.drawText(mProgress + "%", mCircleX, mCircleY, mProgressPaint);
-        postInvalidateDelayed(50);
-
+        postInvalidateDelayed(10);
     }
 
     private void init(Context context, AttributeSet attrs) {

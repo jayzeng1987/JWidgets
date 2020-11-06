@@ -44,6 +44,9 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click the menu item!", Toast.LENGTH_SHORT).show();
                 versoin.setShowUnreadIcon(false);
+
+                Intent intent = new Intent(MainActivity.this, WaveViewActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -52,7 +55,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click the menu item!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, WaveActivity.class);
+                Intent intent = new Intent(MainActivity.this, WaveLoadingActivity.class);
                 startActivity(intent);
             }
         });
