@@ -54,6 +54,7 @@ public class WaveViewBySinCos extends View {
     private static final int BOTTOM = 1;
     private int waveFillType;
     private ValueAnimator valueAnimator;
+
     public WaveViewBySinCos(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
@@ -62,6 +63,7 @@ public class WaveViewBySinCos extends View {
         initPaint();
         initAnimation();
     }
+
     private void getAttr(AttributeSet attrs) {
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.RadarWaveView);
         waveType = typedArray.getInt(R.styleable.RadarWaveView_waveType, SIN);
@@ -73,6 +75,7 @@ public class WaveViewBySinCos extends View {
         waveStart = typedArray.getBoolean(R.styleable.RadarWaveView_waveStart, false);
         typedArray.recycle();
     }
+
     private void initPaint() {
         path = new Path();
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -80,11 +83,13 @@ public class WaveViewBySinCos extends View {
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setColor(waveColor);
     }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         ω = 2 * Math.PI / getWidth();
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         switch (waveType) {
@@ -96,6 +101,7 @@ public class WaveViewBySinCos extends View {
                 break;
         }
     }
+
     /**
      * 根据cos函数绘制波形
      *
@@ -111,6 +117,7 @@ public class WaveViewBySinCos extends View {
                 break;
         }
     }
+
     /**
      * 根据sin函数绘制波形
      *
@@ -126,6 +133,7 @@ public class WaveViewBySinCos extends View {
                 break;
         }
     }
+
     /**
      * 填充波浪上面部分
      */
@@ -143,6 +151,7 @@ public class WaveViewBySinCos extends View {
         path.close();
         canvas.drawPath(path, paint);
     }
+
     /**
      * 填充波浪下面部分
      */
@@ -155,12 +164,13 @@ public class WaveViewBySinCos extends View {
             y = (float) (A * Math.sin(ω * x + φ + Math.PI * startPeriod) + K);
             path.lineTo(x, y);
         }
-//填充矩形
+        //填充矩形
         path.lineTo(getWidth(), getHeight());
         path.lineTo(0, getHeight());
         path.close();
         canvas.drawPath(path, paint);
     }
+
     private void initAnimation() {
         valueAnimator = ValueAnimator.ofInt(0, getWidth());
         valueAnimator.setDuration(1000);
@@ -169,9 +179,9 @@ public class WaveViewBySinCos extends View {
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-/**
- * 刷新页面调取onDraw方法，通过变更φ 达到移动效果
- */
+                /**
+                 * 刷新页面调取onDraw方法，通过变更φ 达到移动效果
+                 */
                 invalidate();
             }
         });
@@ -179,26 +189,31 @@ public class WaveViewBySinCos extends View {
             valueAnimator.start();
         }
     }
+
     public void startAnimation() {
         if (valueAnimator != null) {
             valueAnimator.start();
         }
     }
+
     public void stopAnimation() {
         if (valueAnimator != null) {
             valueAnimator.cancel();
         }
     }
+
     public void pauseAnimation() {
         if (valueAnimator != null) {
             valueAnimator.pause();
         }
     }
+
     public void resumeAnimation() {
         if (valueAnimator != null) {
             valueAnimator.resume();
         }
     }
+
     /**
      * dp 2 px
      *
