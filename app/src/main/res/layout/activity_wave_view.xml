@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".WaveViewActivity">
 
+    <ImageView
+        android:id="@+id/iv_ship"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="152dp"
+        android:src="@mipmap/ship"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.genvict.widgets.jwaveloading.WaveViewBySinCos
         android:id="@+id/wave_test"
         android:layout_width="match_parent"
@@ -21,12 +30,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="200dp"
-        app:waveSpeed="5.0"
-        app:waveStartPeriod="1.5"
-        app:waveColor="#4ADF06EF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:waveColor="#4ADF06EF"
+        app:waveSpeed="5.0"
+        app:waveStartPeriod="1.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
