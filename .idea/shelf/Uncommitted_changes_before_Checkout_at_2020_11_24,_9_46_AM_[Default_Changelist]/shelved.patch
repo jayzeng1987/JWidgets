@@ -1,0 +1,18 @@
+Index: app/src/main/res/anim/ship_anim.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<set xmlns:android=\"http://schemas.android.com/apk/res/android\">\n    <translate\n        android:fromXDelta=\"0%p\"\n        android:toXDelta=\"100%p\"\n        android:fromYDelta=\"0%\"\n        android:toYDelta=\"0%\"\n        android:repeatCount=\"infinite\"\n        android:repeatMode=\"restart\"\n        android:duration=\"10000\"\n        android:interpolator=\"@android:anim/cycle_interpolator\" />\n    <rotate\n        android:fromDegrees=\"-5\"\n        android:toDegrees=\"5\"\n        android:pivotX=\"50%\"\n        android:pivotY=\"50%\"\n        android:repeatCount=\"infinite\"\n        android:repeatMode=\"reverse\"\n        android:interpolator=\"@android:anim/cycle_interpolator\"\n        android:duration=\"2500\"/>\n</set>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/anim/ship_anim.xml	(revision 446dcfbf61a693d9263d0d2ab8b7301ce9fc2eaf)
++++ app/src/main/res/anim/ship_anim.xml	(date 1606182394000)
+@@ -8,7 +8,7 @@
+         android:repeatCount="infinite"
+         android:repeatMode="restart"
+         android:duration="10000"
+-        android:interpolator="@android:anim/cycle_interpolator" />
++        android:interpolator="@android:anim/linear_interpolator" />
+     <rotate
+         android:fromDegrees="-5"
+         android:toDegrees="5"
