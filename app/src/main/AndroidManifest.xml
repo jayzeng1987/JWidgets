@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WaveViewActivity"></activity>
+        <activity android:name=".TrafficLightActivity"></activity>
+        <activity android:name=".WaveViewActivity" />
         <activity android:name=".WaveLoadingActivity" />
         <activity android:name=".WaveActivity" />
         <activity android:name=".SimpleStepActivity" />

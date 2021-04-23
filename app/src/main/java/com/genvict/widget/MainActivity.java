@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
     private JMenuButton testMenuButton;
     private JMenuItem versoin;
     private JMenuItem setting;
+    private JMenuItem me;
 
     private JTopBar topBar;
 
@@ -72,6 +73,15 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "You click right icon button!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        me = findViewById(R.id.me);
+        me.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, TrafficLightActivity.class);
+                startActivity(intent);
             }
         });
     }
