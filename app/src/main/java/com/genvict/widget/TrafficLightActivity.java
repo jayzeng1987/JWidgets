@@ -1,13 +1,15 @@
 package com.genvict.widget;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.genvict.v2x.jtrafficlight.TrafficLightWidget;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TrafficLightActivity extends AppCompatActivity {
-    private TrafficLightWidget redLight, yellowLight, greenLight;
+    private TrafficLightWidget trafficLightWidget;
+    private Button btnStart, btnStop;
 
 
     @Override
@@ -15,59 +17,28 @@ public class TrafficLightActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_traffic_light);
 
-        redLight = findViewById(R.id.light_red);
-        redLight.setIconId(R.mipmap.traffic_light_red);
-        redLight.setCurLightStatus(TrafficLightWidget.LightStatus.BRIGHT);
-        redLight.setDuration(5000);
-        redLight.setLightCallback(new TrafficLightWidget.LightCallback() {
-            @Override
-            public void onFlashStop() {
-                greenLight.start();
-            }
+        trafficLightWidget = findViewById(R.id.light_red);
+        trafficLightWidget.setRedLightIconId(R.mipmap.traffic_light_red);
+        trafficLightWidget.setYellowLightIconId(R.mipmap.traffic_light_yellow);
+        trafficLightWidget.setGreenLightIconId(R.mipmap.traffic_light_green);
 
-            @Override
-            public void onBrightStop() {
-                redLight.setCurLightStatus(TrafficLightWidget.LightStatus.FLASH);
-                redLight.setDuration(5000);
-                redLight.start();
-            }
+        TrafficLightWidget.LightDuration lightDuration = new TrafficLightWidget.LightDuration();
+        lightDuration.redLightBright = 5000;
+        lightDuration.redLightFlash = 0;
+        lightDuration.yellowLightBright = 0;
+        lightDuration.yellowLightFlash = 5000;
+        lightDuration.greenLightBright = 5000;
+        lightDuration.greenLightFlash = 5000;
+        trafficLightWidget.setLightDuration(lightDuration);
+
+        btnStart = findViewById(R.id.btn_light_start);
+        btnStart.setOnClickListener(view -> {
+            trafficLightWidget.start();
         });
-        redLight.start();
-
-        yellowLight = findViewById(R.id.light_yellow);
-        yellowLight.setIconId(R.mipmap.traffic_light_yellow);
-        yellowLight.setCurLightStatus(TrafficLightWidget.LightStatus.FLASH);
-        yellowLight.setDuration(10000);
-        yellowLight.setLightCallback(new TrafficLightWidget.LightCallback() {
-            @Override
-            public void onFlashStop() {
-
-            }
-
-            @Override
-            public void onBrightStop() {
-
-            }
+        btnStop = findViewById(R.id.btn_light_stop);
+        btnStop.setOnClickListener(view -> {
+            trafficLightWidget.stop();
         });
-
-        greenLight = findViewById(R.id.light_green);
-        greenLight.setIconId(R.mipmap.traffic_light_green);
-        greenLight.setCurLightStatus(TrafficLightWidget.LightStatus.BRIGHT);
-        greenLight.setDuration(5000);
-        greenLight.setLightCallback(new TrafficLightWidget.LightCallback() {
-            @Override
-            public void onFlashStop() {
-                yellowLight.start();
-            }
-
-            @Override
-            public void onBrightStop() {
-                greenLight.setCurLightStatus(TrafficLightWidget.LightStatus.FLASH);
-                greenLight.setDuration(5000);
-                greenLight.start();
-            }
-        });
-
 
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="icon_default_width">144dp</dimen>
-    <dimen name="icon_default_Height">144dp</dimen>
+    <dimen name="icon_default_width">96dp</dimen>
+    <dimen name="icon_default_Height">96dp</dimen>
     <dimen name="title_text_size">12sp</dimen>
 </resources>

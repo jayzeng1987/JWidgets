@@ -2,6 +2,9 @@
 <resources>
     <declare-styleable name="JTrafficLight">
         <attr name="icon" format="reference" />
+        <attr name="redLightIcon" format="reference" />
+        <attr name="yellowLightIcon" format="reference" />
+        <attr name="greenLightIcon" format="reference" />
         <attr name="iconWidth" format="dimension" />
         <attr name="iconHeight" format="dimension" />
         <attr name="iconMargin" format="dimension" />

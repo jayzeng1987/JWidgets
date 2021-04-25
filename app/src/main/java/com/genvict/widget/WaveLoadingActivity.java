@@ -19,7 +19,7 @@ public class WaveLoadingActivity extends AppCompatActivity {
 
         loadingView = findViewById(R.id.wave_loading);
 
-        btnStart = findViewById(R.id.btn_start);
+        btnStart = findViewById(R.id.btn_light_start);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

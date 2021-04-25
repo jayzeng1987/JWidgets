@@ -5,7 +5,21 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/iv_traffic_light"
+        android:id="@+id/iv_traffic_light_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:srcCompat="@mipmap/traffic_light_close" />
+
+    <ImageView
+        android:id="@+id/iv_traffic_light_yellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:srcCompat="@mipmap/traffic_light_close" />
+
+    <ImageView
+        android:id="@+id/iv_traffic_light_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
